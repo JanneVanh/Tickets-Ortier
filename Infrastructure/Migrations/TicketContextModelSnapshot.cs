@@ -73,6 +73,37 @@ namespace Infrastructure.Migrations
                     b.ToTable("Reservations");
                 });
 
+            modelBuilder.Entity("Core.Entities.ReservationSeat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShowId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
+
+                    b.HasIndex("SeatId");
+
+                    b.HasIndex("ShowId");
+
+                    b.HasIndex("ShowId", "SeatId")
+                        .IsUnique();
+
+                    b.ToTable("ReservationSeats");
+                });
+
             modelBuilder.Entity("Core.Entities.Seat", b =>
                 {
                     b.Property<int>("Id")
@@ -84,11 +115,16 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Row")
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("Seats");
                 });
@@ -122,6 +158,37 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Show");
+                });
+
+            modelBuilder.Entity("Core.Entities.ReservationSeat", b =>
+                {
+                    b.HasOne("Core.Entities.Reservation", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Seat", "Seat")
+                        .WithMany()
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+
+                    b.Navigation("Seat");
+                });
+
+            modelBuilder.Entity("Core.Entities.Seat", b =>
+                {
+                    b.HasOne("Core.Entities.Reservation", null)
+                        .WithMany("Seats")
+                        .HasForeignKey("ReservationId");
+                });
+
+            modelBuilder.Entity("Core.Entities.Reservation", b =>
+                {
+                    b.Navigation("Seats");
                 });
 #pragma warning restore 612, 618
         }
