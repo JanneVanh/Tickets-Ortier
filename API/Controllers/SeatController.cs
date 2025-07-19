@@ -16,4 +16,22 @@ public class SeatController(ISeatRepository seatRepository) : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("show/{showId}")]
+    public async Task<ActionResult<List<Seat>>> GetSeatsForShowAsync(int showId)
+    {
+        var result = await seatRepository.GetSeatsForShowAsync(showId);
+        if (result is null) return NoContent();
+
+        return Ok(result);
+    }
+
+    [HttpGet("reservation/{reservationId}")]
+    public async Task<ActionResult<List<Seat>>> GetSeatsForReservationAsync(int reservationId)
+    {
+        var result = await seatRepository.GetSeatsForReservationAsync(reservationId);
+        if (result is null) return NoContent();
+
+        return Ok(result);
+    }
 }
