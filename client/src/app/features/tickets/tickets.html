@@ -1,0 +1,35 @@
+<div class="flex mt-32 gap-6">
+    <div class="w-2/4">
+        <div class="mx-auto max-w-4xl flex-1 space-y-6 w-full">
+            <div class="space-y-4 rounded-lg border border-gray-200 p-4 bg-white shadow-sm">
+                <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+                    <p class="text-xl font-semibold">Contactgegevens</p>
+                    <app-text-input label="Voornaam" formControlName="firstName" />
+                    <app-text-input label="Familienaam" formControlName="lastName" />
+                    <app-text-input label="Emailadres" formControlName="email" />
+                    <p class="text-xl font-semibold">Tickets</p>
+                    <app-text-input label="Aantal volwassenen (€15)" formControlName="ticketsAdults" type="number" />
+                    <app-text-input label="Aantal kinderen (€8)" formControlName="ticketsChildren" type="number" />
+                    <app-text-input label="Opmerking" formControlName="remark" />
+
+                    @if (validationErrors) {
+                    <div class="mb-3 p-4 bg-red-100 text-red-600">
+                        <ul class="list-disc px-3">
+                            @for (error of validationErrors; track $index) {
+                            <li>{{error}}</li>
+                            }
+                        </ul>
+                    </div>
+                    }
+
+                    <button mat-flat-button [disabled]="reservationForm.invalid" type="submit"
+                        class="w-full py-2 my-4">Reserveer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="w-1/4">
+        <app-reservation-summary></app-reservation-summary>
+
+    </div>
+</div>

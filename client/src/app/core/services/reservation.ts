@@ -1,0 +1,37 @@
+import { HttpClient } from '@angular/common/http';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { Reservation } from '../../shared/Models/Reservation';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservationService {
+  baseUrl = environment.apiUrl;
+  private http = inject(HttpClient)
+  reservation = signal<Reservation | null>(null);
+  priceForAdults = computed(() => {
+    const reservation = this.reservation();
+    if (!reservation || reservation.ticketsAdults == null) return null;
+    return reservation.ticketsAdults * 15
+  })
+  priceForChildren = computed(() => {
+    const reservation = this.reservation();
+    if (!reservation || reservation.ticketsChildren == null) return null;
+    return reservation.ticketsChildren * 8
+  })
+  totalPrice = computed(() => {
+    const adultPrice = this.priceForAdults()
+    const childPrice = this.priceForChildren()
+
+    if (adultPrice === null && childPrice === null) return null
+
+    return (adultPrice ?? 0) + (childPrice ?? 0)
+  })
+
+  createReservation(values: any) {
+    console.log('API URL:', this.baseUrl)
+    console.log('Sending reservation data:', values)
+    return this.http.post(this.baseUrl + 'reservation', values)
+  }
+}

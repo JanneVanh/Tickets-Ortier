@@ -1,0 +1,28 @@
+<div class="mx-auto max-w-4xl flex-1 space-y-6 w-full">
+    <div class="space-y-4 rounded-lg border border-gray-200 p-4 bg-white shadow-sm">
+        <p class="text-xl font-semibold">Reservatie</p>
+        <div class="space-y-4">
+            <div class="space-y-2">
+                <dl class="flex items-center justify-between gap-4">
+                    <dt class="font-medium text-gray-500">Volwassenen</dt>
+                    <dd class="font-medium text-gray-900">
+                        {{reservationService.priceForAdults() | currency}}
+                    </dd>
+                </dl>
+                <dl class="flex items-center justify-between gap-4">
+                    <dt class="font-medium text-gray-500">Kinderen</dt>
+                    <dd class="font-medium text-green-500">
+                        {{reservationService.priceForChildren() | currency}}
+                    </dd>
+                </dl>
+            </div>
+
+            <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
+                <dt class="font-medium text-gray-500">Total</dt>
+                <dd class="font-medium text-gray-900">
+                    {{reservationService.totalPrice() | currency}}
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

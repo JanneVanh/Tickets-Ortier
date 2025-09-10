@@ -25,7 +25,7 @@ public class ReservationRepository(TicketContext ticketContext) : IReservationRe
                 SeatId = seat.Id,
                 ReservationId = reservationId,
                 Reservation = reservation,
-                ShowId = reservation.Show.Id
+                ShowId = reservation.ShowId
             };
             _ticketContext.ReservationSeats.Add(reservationSeat);
         }

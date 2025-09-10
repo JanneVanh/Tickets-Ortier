@@ -12,7 +12,7 @@ public class Reservation : BaseEntity
     public string? Remark { get; set; }
     public bool IsPaid { get; set; }
     public string? PaymentRemark { get; set; }
-    public required Show Show { get; set; }
+    public required int ShowId { get; set; }
     public string? PaymentCode => $"Ortier-{Id:D3}";
 }
 
