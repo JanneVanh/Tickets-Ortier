@@ -1,17 +1,22 @@
-﻿using Core.Entities;
+﻿using API.Commands.SendReservationConfirmation;
+using Core.Entities;
 using Core.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("[Controller]")]
-public class ReservationController(IReservationRepository reservationRepository) : ControllerBase
+public class ReservationController(IReservationRepository reservationRepository, IMediator mediator) : ControllerBase
 {
+    private readonly IReservationRepository _reservationRepository = reservationRepository;
+    private readonly IMediator _mediator = mediator;
+
     [HttpGet]
     public async Task<ActionResult> GetReservations()
     {
-        var result = await reservationRepository.GetReservationsAsync();
+        var result = await _reservationRepository.GetReservationsAsync();
         if (result == null) return NoContent();
         return Ok(result);
     }
@@ -19,7 +24,12 @@ public class ReservationController(IReservationRepository reservationRepository)
     [HttpPost]
     public async Task<ActionResult> CreateReservation([FromBody] Reservation reservation)
     {
-        var result = await reservationRepository.CreateReservation(reservation);
+        var request = new CreateReservationCommand
+        {
+            Reservation = reservation
+        };
+
+        var result = await _mediator.Send(request);
 
         return Ok(result);
     }
@@ -27,7 +37,7 @@ public class ReservationController(IReservationRepository reservationRepository)
     [HttpPut("seats/{reservationId}")]
     public async Task<ActionResult> AssignSeats([FromBody] List<Seat> seats, int reservationId)
     {
-        await reservationRepository.AssignSeatsAsync(seats, reservationId);
+        await _reservationRepository.AssignSeatsAsync(seats, reservationId);
 
         return Ok();
     }
@@ -35,8 +45,8 @@ public class ReservationController(IReservationRepository reservationRepository)
     [HttpPut]
     public async Task<ActionResult> UpdateReservation([FromBody] Reservation reservation)
     {
-        reservationRepository.UpdateReservation(reservation);
-        if (await reservationRepository.SaveChangesAsync())
+        _reservationRepository.UpdateReservation(reservation);
+        if (await _reservationRepository.SaveChangesAsync())
             return NoContent();
 
         return BadRequest("Problem updating reservation");
@@ -45,11 +55,11 @@ public class ReservationController(IReservationRepository reservationRepository)
     [HttpDelete("{reservationId}")]
     public async Task<ActionResult> DeleteReservation(int reservationId)
     {
-        var reservation = await reservationRepository.GetReservationByIdAsync(reservationId);
+        var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
         if (reservation == null) return NotFound();
 
-        reservationRepository.DeleteReservation(reservation);
-        if (await reservationRepository.SaveChangesAsync())
+        _reservationRepository.DeleteReservation(reservation);
+        if (await _reservationRepository.SaveChangesAsync())
             return NoContent();
 
         return BadRequest("Problem deleting reservation");
