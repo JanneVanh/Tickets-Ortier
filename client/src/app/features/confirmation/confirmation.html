@@ -1,0 +1,21 @@
+<div>
+  <p>Bedankt voor je bestelling</p>
+
+  <p>
+    U reserveerde {{ reservationService.reservation()?.numberOfAdults ?? 0 }} ticket(s) voor volwassenen en
+    {{ reservationService.reservation()?.numberOfChildren ?? 0 }} voor kinderen.
+  </p>
+
+  <p>
+    Gelieve <b>{{ reservationService.totalPrice() | currency:'EUR':'symbol':'1.2-2' }}</b> over te schrijven op rekeningnummer BE. Vermeld de code
+    <b>{{ reservationService.reservation()?.paymentCode ?? '—' }}</b> als mededeling.
+  </p>
+
+  <br />
+
+  <p>Enkele dagen voor de show zal u uw tickets via email ontvangen.</p>
+
+  <br />
+
+  <p>Wij kijken er alvast naar uit om voor u te zingen!</p>
+</div>

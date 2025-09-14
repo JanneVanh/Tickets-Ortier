@@ -12,13 +12,13 @@ export class ReservationService {
   reservation = signal<Reservation | null>(null);
   priceForAdults = computed(() => {
     const reservation = this.reservation();
-    if (!reservation || reservation.ticketsAdults == null) return null;
-    return reservation.ticketsAdults * 15
+    if (!reservation || reservation.numberOfAdults == null) return null;
+    return reservation.numberOfAdults * 15
   })
   priceForChildren = computed(() => {
     const reservation = this.reservation();
-    if (!reservation || reservation.ticketsChildren == null) return null;
-    return reservation.ticketsChildren * 8
+    if (!reservation || reservation.numberOfChildren == null) return null;
+    return reservation.numberOfChildren * 8
   })
   totalPrice = computed(() => {
     const adultPrice = this.priceForAdults()

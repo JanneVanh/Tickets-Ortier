@@ -1,16 +1,17 @@
-﻿using Core.Interfaces;
+﻿using Core.Entities;
+using Core.Interfaces;
 using MediatR;
 
 namespace API.Commands.SendReservationConfirmation;
 
 public class CreateReservationCommandHandler(IEmailService emailService, IShowRepository showRepository, IReservationRepository reservationRepository)
-    : IRequestHandler<CreateReservationCommand, bool>
+    : IRequestHandler<CreateReservationCommand, Reservation>
 {
     private readonly IEmailService _emailService = emailService;
     private readonly IShowRepository _showRepository = showRepository;
     private readonly IReservationRepository _reservationRepository = reservationRepository;
 
-    public async Task<bool> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
+    public async Task<Reservation> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
         var reservation = await _reservationRepository.CreateReservation(request.Reservation);
         if (reservation == null) throw new InvalidOperationException("Couldn't save reservation");
@@ -37,6 +38,6 @@ public class CreateReservationCommandHandler(IEmailService emailService, IShowRe
 
         await _emailService.SendEmail(subject, body, reservation.Email);
 
-        return true;
+        return reservation;
     }
 }

@@ -3,6 +3,7 @@ import { Show } from "./Show";
 export type Reservation = {
     id: number;
     show: Show;
-    ticketsAdults: number;
-    ticketsChildren: number;
+    numberOfAdults: number;
+    numberOfChildren: number;
+    paymentCode: string | null;
 }

@@ -47,8 +47,9 @@ export class Tickets implements OnInit {
     const tempReservation = {
       id: 0, // Temporary ID for form preview
       show: this.show!,
-      ticketsAdults: formValue.ticketsAdults ? parseInt(formValue.ticketsAdults) : 0,
-      ticketsChildren: formValue.ticketsChildren ? parseInt(formValue.ticketsChildren) : 0
+      numberOfAdults: formValue.ticketsAdults ? parseInt(formValue.ticketsAdults) : 0,
+      numberOfChildren: formValue.ticketsChildren ? parseInt(formValue.ticketsChildren) : 0,
+      paymentCode: null
     };
     this.reservationService.reservation.set(tempReservation);
   }
@@ -57,8 +58,8 @@ export class Tickets implements OnInit {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    ticketsAdults: [''],
-    ticketsChildren: [''],
+    numberOfAdults: [''],
+    numberOfChildren: [''],
     remark: [''],
   })
 
@@ -70,8 +71,8 @@ export class Tickets implements OnInit {
       SurName: this.reservationForm.value.lastName,
       Name: this.reservationForm.value.firstName,
       Email: this.reservationForm.value.email,
-      NumberOfAdults: parseInt(this.reservationForm.value.ticketsAdults || '0'),
-      NumberOfChildren: parseInt(this.reservationForm.value.ticketsChildren || '0'),
+      NumberOfAdults: parseInt(this.reservationForm.value.numberOfAdults || '0'),
+      NumberOfChildren: parseInt(this.reservationForm.value.numberOfChildren || '0'),
       ShowId: parseInt(id),
       Remark: this.reservationForm.value.remark || null,
       ReservationDate: new Date().toISOString(),
@@ -79,13 +80,11 @@ export class Tickets implements OnInit {
       IsPaid: false
     };
 
-    console.log('Submitting reservation:', reservationData);
-
     this.reservationService.createReservation(reservationData).subscribe({
       next: (data: any) => {
         this.reservationService.reservation.set(data);
         this.snack.success('Je tickets zijn gereserveerd.');
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/confirmation');
       },
       error: (error) => {
         console.error('Reservation failed:', error);

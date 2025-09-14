@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using Core.Entities;
 using Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 
