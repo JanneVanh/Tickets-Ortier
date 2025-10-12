@@ -1,10 +1,11 @@
 ﻿using Core.Entities;
 using Infrastructure.Config;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
-public class TicketContext(DbContextOptions options) : DbContext(options)
+public class TicketContext(DbContextOptions<TicketContext> options) : IdentityDbContext<AppUser>(options)
 {
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Show> Shows { get; set; }
