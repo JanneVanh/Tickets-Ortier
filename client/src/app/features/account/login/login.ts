@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Account } from '../../../core/services/account';
 
 @Component({
@@ -21,27 +21,28 @@ import { Account } from '../../../core/services/account';
   styleUrl: './login.scss'
 })
 export class Login {
-private fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
   private accountService = inject(Account);
   private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  returnUrl = '/shop';
-
-  constructor() {
-    const url = this.activatedRoute.snapshot.queryParams['returnUrl'];
-    if (url) this.returnUrl = url;
-  }
 
   loginForm = this.fb.group({
-    email: [''],
-    password: [''],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
   })
 
   onSubmit() {
-    this.accountService.login(this.loginForm.value).subscribe({
-      next: () => {
-        this.router.navigateByUrl(this.returnUrl);
-      }
-    })
+    if (this.loginForm.valid) {
+      console.log('Form submitted');
+      this.accountService.login(this.loginForm.value).subscribe({
+        next: () => {
+          this.router.navigateByUrl('/reservations');
+        },
+        error: (error) => {
+          console.log('Login failed:', error);
+        }
+      });
+    } else {
+      console.log('Form is invalid');
+    }
   }
 }

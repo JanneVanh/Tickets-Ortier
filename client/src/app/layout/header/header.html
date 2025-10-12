@@ -2,9 +2,24 @@
     <div class="flex align-middle items-center gap-10 justify-center max-w-screen-2xl mx-auto">
         <img routerLink="/" src="/images/logo-placeholder-image.png" alt="app logo" class="max-h-16">
         <nav class="flex gap-3 my-2 uppercase text-2xl">
-            <a routerLink="/" 
-                routerLinkActive="active" 
-                [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </nav>
+        @if (accountService.currentUser()) {
+        <button mat-button [mat-menu-trigger-for]="menu">
+            <mat-icon>arrow_drop_down</mat-icon>
+            <span>{{accountService.currentUser()?.email}}</span>
+        </button>
+        }
     </div>
 </header>
+
+<!-- @if (busyService.loading){
+    <mat-progress-bar mode="indeterminate" class="fixed top-20 z-50"></mat-progress-bar>
+} -->
+
+<mat-menu #menu="matMenu" class="px-5">
+    <button mat-menu-item class="px-3" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+    </button>
+</mat-menu>
