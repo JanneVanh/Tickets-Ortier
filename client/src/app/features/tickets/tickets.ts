@@ -49,7 +49,9 @@ export class Tickets implements OnInit {
       show: this.show!,
       numberOfAdults: formValue.ticketsAdults ? parseInt(formValue.ticketsAdults) : 0,
       numberOfChildren: formValue.ticketsChildren ? parseInt(formValue.ticketsChildren) : 0,
-      paymentCode: null
+      paymentCode: null,
+      email: "",
+      isPaid: false,
     };
     this.reservationService.reservation.set(tempReservation);
   }

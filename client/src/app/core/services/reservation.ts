@@ -30,12 +30,14 @@ export class ReservationService {
   })
 
   createReservation(values: any) {
-    console.log('API URL:', this.baseUrl)
-    console.log('Sending reservation data:', values)
     return this.http.post(this.baseUrl + 'reservation', values)
   }
 
   getReservations() {
     return this.http.get<Reservation[]>(this.baseUrl + 'reservation')
+  }
+
+  updateReservation(reservation: Reservation) {
+    return this.http.put<Reservation>(this.baseUrl + 'reservation', reservation)
   }
 }
