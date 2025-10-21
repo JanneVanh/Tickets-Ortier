@@ -1,13 +1,17 @@
-﻿using Core.Entities;
+﻿using API.Queries.SeatsForShow;
+using Core.Entities;
 using Core.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("[Controller]")]
-public class SeatController(ISeatRepository seatRepository) : ControllerBase
+public class SeatController(ISeatRepository seatRepository, IMediator mediator) : ControllerBase
 {
+    private readonly IMediator _mediator = mediator;
+
     [HttpGet]
     public async Task<ActionResult<List<Seat>>> GetAllSeatsAsync()
     {
@@ -20,9 +24,13 @@ public class SeatController(ISeatRepository seatRepository) : ControllerBase
     [HttpGet("show/{showId}")]
     public async Task<ActionResult<List<Seat>>> GetSeatsForShowAsync(int showId)
     {
-        var result = await seatRepository.GetSeatsForShowAsync(showId);
-        if (result is null) return NoContent();
+        var request = new SeatsForShowQuery()
+        {
+            ShowId = showId
+        };
+        var result = await _mediator.Send(request);
 
+        if (result is null) return NoContent();
         return Ok(result);
     }
 
