@@ -1,4 +1,5 @@
-﻿using API.Commands.SendReservationConfirmation;
+﻿using API.Commands.CreateReservation;
+using API.Commands.SendReservationConfirmation;
 using Core.Entities;
 using Core.Interfaces;
 using MediatR;
@@ -22,24 +23,17 @@ public class ReservationController(IReservationRepository reservationRepository,
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateReservation([FromBody] Reservation reservation)
+    public async Task<ActionResult> CreateReservation([FromBody] CreateReservationRequest body)
     {
-        var request = new CreateReservationCommand
+        var command = new CreateReservationCommand
         {
-            Reservation = reservation
+            Reservation = body.Reservation,
+            SeatIds = body.SeatIds,
         };
 
-        var result = await _mediator.Send(request);
+        var result = await _mediator.Send(command);
 
         return Ok(result);
-    }
-
-    [HttpPut("seats/{reservationId}")]
-    public async Task<ActionResult> AssignSeats([FromBody] List<Seat> seats, int reservationId)
-    {
-        await _reservationRepository.AssignSeatsAsync(seats, reservationId);
-
-        return Ok();
     }
 
     [HttpPut]

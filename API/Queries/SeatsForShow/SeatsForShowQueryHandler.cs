@@ -18,6 +18,7 @@ public class SeatsForShowQueryHandler(
 
         return allSeats.Select(s => new SeatDto
         {
+            Id = s.Id,
             Row = s.Row,
             Number = s.Number,
             Status = reservedSeats.Select(rs => rs.Name).Contains(s.Name) ? SeatStatus.Reserved : SeatStatus.Available,

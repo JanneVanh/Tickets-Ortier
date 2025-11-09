@@ -44,11 +44,9 @@ export class Reservations implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.reservationService.getReservations().subscribe({
       next: response => {
-        console.log('API Response:', response);
-        console.log('Number of reservations:', response.length);
-        this.reservations = response; // Use the setter
+        this.reservations = response;
       },
-      error: error => console.log('Error:', error)
+      error: error => console.log('Error: ', error)
     })
   }
 

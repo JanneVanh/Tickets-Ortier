@@ -28,6 +28,13 @@ export class ReservationService {
 
     return (adultPrice ?? 0) + (childPrice ?? 0)
   })
+  totalSeats = computed(() => {
+    const reservation = this.reservation();
+
+    if (!reservation || ( reservation?.numberOfAdults === null && reservation.numberOfChildren === null)) return null
+
+    return (reservation?.numberOfAdults ?? 0) + (reservation?.numberOfChildren ?? 0)
+  })
 
   createReservation(values: any) {
     return this.http.post(this.baseUrl + 'reservation', values)

@@ -11,6 +11,7 @@ public class TicketContext(DbContextOptions<TicketContext> options) : IdentityDb
     public DbSet<Show> Shows { get; set; }
     public DbSet<Seat> Seats { get; set; }
     public DbSet<ReservationSeat> ReservationSeats { get; set; }
+    public DbSet<SeatHold> SeatHolds { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,6 +28,10 @@ public class TicketContext(DbContextOptions<TicketContext> options) : IdentityDb
 
         modelBuilder.Entity<ReservationSeat>()
             .HasIndex(rs => rs.ShowId);
+
+        modelBuilder.Entity<SeatHold>()
+            .HasIndex(h => new { h.SeatId, h.ShowId })
+            .IsUnique();
     }
 }
 

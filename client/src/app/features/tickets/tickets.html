@@ -2,7 +2,7 @@
     <div class="w-2/4">
         <div class="mx-auto max-w-4xl flex-1 space-y-6 w-full">
             <div class="space-y-4 rounded-lg border border-gray-200 p-4 bg-white shadow-sm">
-                <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+                <form [formGroup]="reservationForm">
                     <p class="text-xl font-semibold">Contactgegevens</p>
                     <app-text-input label="Voornaam" formControlName="firstName" />
                     <app-text-input label="Familienaam" formControlName="lastName" />
@@ -23,7 +23,7 @@
                     }
 
                     <button mat-flat-button [disabled]="reservationForm.invalid" type="submit"
-                        class="w-full py-2 my-4">Reserveer</button>
+                        class="w-full py-2 my-4" (click)="onNext()">Reserveer</button>
                 </form>
             </div>
         </div>

@@ -1,0 +1,75 @@
+<div class="seat-overview-container">
+  @if (showId && seats.length > 0) {
+  <div class="seat-section">
+    <div class="seat-information">
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-seat seat-available"></div>
+          <span>Beschikbaar</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-seat seat-reserved"></div>
+          <span>Gereserveerd</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-seat seat-selected"></div>
+          <span>Geselecteerd voor jou</span>
+        </div>
+      </div>
+
+      <div class="seat-summary">
+        <h3>Samenvatting</h3>
+        <p>Je hebt <strong>{{ getSelectedSeatsCount() }}</strong> stoel(en) gereserveerd</p>
+        <p>voor de show op {{showDay}}</p>
+        <div class="selected-seats-list">
+          @for (seat of getSelectedSeats(); track trackBySeat($index, seat)) {
+          <span class="selected-seat-item">
+            {{ seat.row }}{{ seat.number }}
+          </span>
+          }
+        </div>
+        <button mat-raised-button type="submit" 
+          (click)="onSubmit()"
+          [disabled]="getSelectedSeatsCount() !== reservationService.totalSeats()">Reserveer</button>
+      </div>
+    </div>
+
+    <div class="seat-grid">
+      <div class="theater-screen">
+        <div class="screen-label">Podium</div>
+      </div>
+
+      @for (row of seats; let i = $index; track trackByRow(i, row)) {
+      <div class="row">
+        <span class="row-label">{{ getRowLabel(i) }}</span>
+        <div class="seats-container">
+          @for (seat of row; track trackBySeat($index, seat)) {
+          <button type="button" class="seat" [ngClass]="{
+              'seat-available': seat.status === SeatStatus.Available,
+              'seat-reserved': seat.status === SeatStatus.Reserved,
+              'seat-selected': seat.status === SeatStatus.Selected
+            }" [attr.aria-label]="'Seat ' + getRowLabel(i) + seat.number + ' - ' + getSeatStatusText(seat.status)"
+            (click)="selectSeat(seat)">
+            {{ seat.number }}
+          </button>
+          }
+        </div>
+        <span class="row-label">{{ getRowLabel(i) }}</span>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  @if (showId && seats.length === 0 && !loading) {
+  <div class="no-seats-message">
+    <p>No seats available for this show.</p>
+  </div>
+  }
+
+  @if (loading) {
+  <div class="loading-message">
+    <p>Loading seats...</p>
+  </div>
+  }
+</div>

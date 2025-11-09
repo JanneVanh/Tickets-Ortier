@@ -8,26 +8,26 @@ public class ReservationRepository(TicketContext ticketContext) : IReservationRe
 {
     private readonly TicketContext _ticketContext = ticketContext;
 
-    public async Task AssignSeatsAsync(IEnumerable<Seat> seats, int reservationId)
+    public async Task AssignSeatsAsync(IEnumerable<int> seatIds, Reservation reservation)
     {
-        var reservation = await GetReservationByIdAsync(reservationId);
-        if (reservation is null) return;
-
         var existingSeats = await _ticketContext.ReservationSeats.Where(rs => rs.Id == reservation.Id).ToListAsync();
         if (existingSeats is not null && existingSeats.Count > 0)
             _ticketContext.ReservationSeats.RemoveRange(existingSeats);
 
-        foreach (var seat in seats)
+        foreach (var seatId in seatIds)
         {
+            var seat = await _ticketContext.Seats.FirstOrDefaultAsync(s => s.Id == seatId);
+
             var reservationSeat = new ReservationSeat()
             {
                 Seat = seat,
-                SeatId = seat.Id,
-                ReservationId = reservationId,
+                SeatId = seatId,
+                ReservationId = reservation.Id,
                 Reservation = reservation,
                 ShowId = reservation.ShowId
             };
             _ticketContext.ReservationSeats.Add(reservationSeat);
+            await _ticketContext.SaveChangesAsync();
         }
     }
 

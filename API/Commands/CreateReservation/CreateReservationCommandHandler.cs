@@ -20,6 +20,8 @@ public class CreateReservationCommandHandler(IEmailService emailService, IShowRe
 
         if (show is null) throw new InvalidOperationException("Show not found");
 
+        await _reservationRepository.AssignSeatsAsync(request.SeatIds, reservation);
+
         var body = $@"
     <html>
       <body>

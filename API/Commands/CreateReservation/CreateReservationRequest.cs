@@ -1,9 +1,8 @@
 ﻿using Core.Entities;
-using MediatR;
 
-namespace API.Commands.SendReservationConfirmation;
+namespace API.Commands.CreateReservation;
 
-public class CreateReservationCommand : IRequest<Reservation>
+public class CreateReservationRequest
 {
     public required Reservation Reservation { get; set; }
     public required List<int> SeatIds { get; set; }

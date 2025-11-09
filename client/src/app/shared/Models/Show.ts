@@ -1,4 +1,4 @@
 export type Show = {
-    id: string;
+    id: number;
     day: string;
 }

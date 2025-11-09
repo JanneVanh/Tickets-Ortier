@@ -3,10 +3,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from '../../core/services/reservation';
-import { Snackbar } from '../../core/services/snackbar';
 import { ReservationSummary } from "../../shared/components/reservation-summary/reservation-summary";
 import { TextInput } from "../../shared/components/text-input/text-input";
-import { Show } from '../../shared/Models/Show';
 
 @Component({
   selector: 'app-tickets',
@@ -14,7 +12,7 @@ import { Show } from '../../shared/Models/Show';
     ReactiveFormsModule,
     TextInput,
     MatButton,
-    ReservationSummary
+    ReservationSummary,
   ],
   templateUrl: './tickets.html',
   styleUrl: './tickets.scss'
@@ -23,12 +21,16 @@ export class Tickets implements OnInit {
   private activatedRoute = inject(ActivatedRoute)
   private fb = inject(FormBuilder)
   private reservationService = inject(ReservationService)
-  private router = inject(Router)
-  private snack = inject(Snackbar)
   validationErrors?: string[]
-  show: Show | undefined;
+  showId: number = 0;
+  private router = inject(Router)
 
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe(params => {
+      const showIdParam = params.get('showid');
+      this.showId = showIdParam !== null ? Number(showIdParam) : 0;
+    })
+
     this.setupFormSubscriptions();
   }
 
@@ -46,12 +48,17 @@ export class Tickets implements OnInit {
     // Create a temporary reservation object for price calculation
     const tempReservation = {
       id: 0, // Temporary ID for form preview
-      show: this.show!,
-      numberOfAdults: formValue.ticketsAdults ? parseInt(formValue.ticketsAdults) : 0,
-      numberOfChildren: formValue.ticketsChildren ? parseInt(formValue.ticketsChildren) : 0,
+      showId: this.showId!,
+      numberOfAdults: formValue.numberOfAdults ? parseInt(formValue.numberOfAdults) : 0,
+      numberOfChildren: formValue.numberOfChildren ? parseInt(formValue.numberOfChildren) : 0,
       paymentCode: null,
       email: "",
       isPaid: false,
+      surName: "",
+      name: "",
+      remark: "",
+      reservationDate: new Date().toISOString(),
+      totalPrice: 0,
     };
     this.reservationService.reservation.set(tempReservation);
   }
@@ -65,34 +72,31 @@ export class Tickets implements OnInit {
     remark: [''],
   })
 
-  onSubmit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('showid')
-    if (!id) return;
+  onNext(): void {
+    if (this. 
+      reservationForm.valid) {
+      const formValue = this.reservationForm.value;
 
-    const reservationData = {
-      SurName: this.reservationForm.value.lastName,
-      Name: this.reservationForm.value.firstName,
-      Email: this.reservationForm.value.email,
-      NumberOfAdults: parseInt(this.reservationForm.value.numberOfAdults || '0'),
-      NumberOfChildren: parseInt(this.reservationForm.value.numberOfChildren || '0'),
-      ShowId: parseInt(id),
-      Remark: this.reservationForm.value.remark || null,
-      ReservationDate: new Date().toISOString(),
-      TotalPrice: this.reservationService.totalPrice(),
-      IsPaid: false
-    };
+      const reservation = {
+        id: 0, // Will be assigned by backend
+        showId: this.showId,
+        numberOfAdults: formValue.numberOfAdults ? parseInt(formValue.numberOfAdults) : 0,
+        numberOfChildren: formValue.numberOfChildren ? parseInt(formValue.numberOfChildren) : 0,
+        paymentCode: null,
+        email: formValue.email || "",
+        isPaid: false,
+        surName: formValue.lastName || "",
+        name: formValue.firstName || "",
+        remark: formValue.remark || "",
+        reservationDate: new Date().toISOString(),
+        totalPrice: 0, // Will be calculated by backend or service
+      };
 
-    this.reservationService.createReservation(reservationData).subscribe({
-      next: (data: any) => {
-        this.reservationService.reservation.set(data);
-        this.snack.success('Je tickets zijn gereserveerd.');
-        this.router.navigateByUrl('/confirmation');
-      },
-      error: (error) => {
-        console.error('Reservation failed:', error);
-        console.error('Error details:', error.error);
-        this.snack.error('Er is een fout opgetreden bij het reserveren.');
-      }
-    });
+      this.reservationService.reservation.set(reservation);
+      this.router.navigateByUrl(`/seatoverview/${this.showId}`);
+    } else {
+      this.reservationForm.markAllAsTouched();
+    }
   }
 }
+

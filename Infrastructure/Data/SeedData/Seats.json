@@ -18,7 +18,6 @@
   { "Row": "A", "Number": 17 },
   { "Row": "A", "Number": 18 },
   { "Row": "A", "Number": 19 },
-  { "Row": "A", "Number": 20 },
 
   { "Row": "B", "Number": 1 },
   { "Row": "B", "Number": 2 },
@@ -39,7 +38,6 @@
   { "Row": "B", "Number": 17 },
   { "Row": "B", "Number": 18 },
   { "Row": "B", "Number": 19 },
-  { "Row": "B", "Number": 20 },
 
   { "Row": "C", "Number": 1 },
   { "Row": "C", "Number": 2 },
@@ -60,7 +58,6 @@
   { "Row": "C", "Number": 17 },
   { "Row": "C", "Number": 18 },
   { "Row": "C", "Number": 19 },
-  { "Row": "C", "Number": 20 },
 
   { "Row": "D", "Number": 1 },
   { "Row": "D", "Number": 2 },
@@ -81,7 +78,6 @@
   { "Row": "D", "Number": 17 },
   { "Row": "D", "Number": 18 },
   { "Row": "D", "Number": 19 },
-  { "Row": "D", "Number": 20 },
 
   { "Row": "E", "Number": 1 },
   { "Row": "E", "Number": 2 },
@@ -102,7 +98,6 @@
   { "Row": "E", "Number": 17 },
   { "Row": "E", "Number": 18 },
   { "Row": "E", "Number": 19 },
-  { "Row": "E", "Number": 20 },
 
   { "Row": "F", "Number": 1 },
   { "Row": "F", "Number": 2 },
@@ -123,7 +118,6 @@
   { "Row": "F", "Number": 17 },
   { "Row": "F", "Number": 18 },
   { "Row": "F", "Number": 19 },
-  { "Row": "F", "Number": 20 },
 
   { "Row": "G", "Number": 1 },
   { "Row": "G", "Number": 2 },
@@ -144,7 +138,6 @@
   { "Row": "G", "Number": 17 },
   { "Row": "G", "Number": 18 },
   { "Row": "G", "Number": 19 },
-  { "Row": "G", "Number": 20 },
 
   { "Row": "H", "Number": 1 },
   { "Row": "H", "Number": 2 },
