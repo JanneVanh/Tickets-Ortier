@@ -34,5 +34,21 @@ body {
     @apply mx-auto max-w-screen-2xl
 }
 
+.mat-mdc-snack-bar-container.snack-error {
+    --mdc-snackbar-container-color: red;
+    --mat-snack-bar-button-color: white;
+    --mdc-snackbar-supporting-text-color: white;
+}
+
+.mat-mdc-snack-bar-container.snack-success {
+    --mdc-snackbar-container-color: green;
+    --mat-snack-bar-button-color: white;
+    --mdc-snackbar-supporting-text-color: white;
+}
+
+.mdc-notched-outline__notch {
+    border-right-style: none !important;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
