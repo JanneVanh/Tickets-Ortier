@@ -13,12 +13,12 @@ export class ReservationService {
   priceForAdults = computed(() => {
     const reservation = this.reservation();
     if (!reservation || reservation.numberOfAdults == null) return null;
-    return reservation.numberOfAdults * 15
+    return reservation.numberOfAdults * 14
   })
   priceForChildren = computed(() => {
     const reservation = this.reservation();
     if (!reservation || reservation.numberOfChildren == null) return null;
-    return reservation.numberOfChildren * 8
+    return reservation.numberOfChildren * 7
   })
   totalPrice = computed(() => {
     const adultPrice = this.priceForAdults()
@@ -46,5 +46,9 @@ export class ReservationService {
 
   updateReservation(reservation: Reservation) {
     return this.http.put<Reservation>(this.baseUrl + 'reservation', reservation)
+  }
+
+  emptyReservation() {
+    this.reservation.set(null)
   }
 }

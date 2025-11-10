@@ -5,6 +5,20 @@
   justify-content: center;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  navigation-button {
+    color: #1976d2;
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    width: fit-content;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
 }
 
 .show-selector {
@@ -229,21 +243,6 @@
     color: #1976d2;
     font-size: 16px;
   }
-
-  button {
-    color: #1976d2;
-    margin: 0 0 15px 0;
-    font-size: 16px;
-    width: fit-content;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-
-  }
 }
 
 .selected-seats-list {
@@ -288,6 +287,13 @@
 .seat-information {
   min-width: 260px;
   margin-right: 0;
+}
+
+.cancel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 // Responsive design

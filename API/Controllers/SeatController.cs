@@ -59,4 +59,11 @@ public class SeatController(ISeatRepository seatRepository, IMediator mediator, 
         var result = await seatHoldRepository.UnHoldSeatAsync(showSeat.SeatId, showSeat.ShowId);
         return Ok(result);
     }
+
+    [HttpPost("cleanup-expired-holds")]
+    public async Task<ActionResult<object>> CleanupExpiredHolds()
+    {
+        var cleanedUpCount = await seatHoldRepository.CleanupExpiredHoldsAsync();
+        return Ok(new { message = $"Cleaned up {cleanedUpCount} expired seat holds", count = cleanedUpCount });
+    }
 }

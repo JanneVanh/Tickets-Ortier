@@ -1,5 +1,9 @@
 <div class="seat-overview-container">
-  @if (showId && seats.length > 0) {
+  @if (loading) {
+  <div class="loading-message">
+    <p>Loading seats...</p>
+  </div>
+  } @else if (showId && seats.length > 0) {
   <div class="seat-section">
     <div class="seat-information">
       <div class="legend">
@@ -28,9 +32,12 @@
           </span>
           }
         </div>
-        <button mat-raised-button type="submit" 
-          (click)="onSubmit()"
+        <button mat-raised-button (click)="onSubmit()" class="navigation-button"
           [disabled]="getSelectedSeatsCount() !== reservationService.totalSeats()">Reserveer</button>
+      </div>
+
+      <div class="cancel">
+        <button mat-raised-button (click)="cancel()" class="navigation-button">Annuleer</button>
       </div>
     </div>
 
@@ -64,12 +71,6 @@
   @if (showId && seats.length === 0 && !loading) {
   <div class="no-seats-message">
     <p>No seats available for this show.</p>
-  </div>
-  }
-
-  @if (loading) {
-  <div class="loading-message">
-    <p>Loading seats...</p>
   </div>
   }
 </div>

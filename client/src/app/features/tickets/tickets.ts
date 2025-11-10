@@ -89,7 +89,7 @@ export class Tickets implements OnInit {
         name: formValue.firstName || "",
         remark: formValue.remark || "",
         reservationDate: new Date().toISOString(),
-        totalPrice: 0, // Will be calculated by backend or service
+        totalPrice: this.reservationService.totalPrice() ?? 0,
       };
 
       this.reservationService.reservation.set(reservation);

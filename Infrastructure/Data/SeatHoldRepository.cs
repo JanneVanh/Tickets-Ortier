@@ -1,11 +1,23 @@
 ﻿using API.Enums;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
 public class SeatHoldRepository(TicketContext ticketContext) : ISeatHoldRepository
 {
+    public async Task<List<int>> GetHoldedSeatsForShowAsync(int showId)
+    {
+        // Clean up expired holds before returning current holds
+        await CleanupExpiredHoldsAsync();
+        
+        return await ticketContext.SeatHolds
+            .Where(sh => sh.ShowId == showId)
+            .Select(sh => sh.SeatId)
+            .ToListAsync();
+    }
+
     public async Task<SeatStatus> HoldSeatAsync(int seatId, int showId)
     {
         var seatNotAvailable = ticketContext.SeatHolds.Any(s => s.ShowId == showId && s.SeatId == seatId);
@@ -37,6 +49,21 @@ public class SeatHoldRepository(TicketContext ticketContext) : ISeatHoldReposito
         await ticketContext.SaveChangesAsync();
 
         return SeatStatus.Available;
+    }
+
+    public async Task<int> CleanupExpiredHoldsAsync()
+    {
+        var expiredHolds = await ticketContext.SeatHolds
+            .Where(sh => sh.HoldExpiryTime < DateTime.UtcNow)
+            .ToListAsync();
+
+        if (expiredHolds.Any())
+        {
+            ticketContext.SeatHolds.RemoveRange(expiredHolds);
+            await ticketContext.SaveChangesAsync();
+        }
+
+        return expiredHolds.Count;
     }
 }
 

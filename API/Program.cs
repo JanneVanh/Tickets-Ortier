@@ -1,3 +1,4 @@
+using API.Services;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -34,6 +35,8 @@ builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ISeatHoldRepository, SeatHoldRepository>();
+
+builder.Services.AddHostedService<SeatHoldCleanupService>();
 
 builder.WebHost.ConfigureKestrel(options =>
 {

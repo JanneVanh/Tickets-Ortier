@@ -8,6 +8,7 @@ import { SeatStatus } from '../../shared/Models/SeatStatus';
 import { MatButton } from '@angular/material/button';
 import { ReservationService } from '../../core/services/reservation';
 import { Snackbar } from '../../core/services/snackbar';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-seatoverview',
@@ -64,7 +65,6 @@ export class Seatoverview implements OnInit {
         this.seats = sortedRows.map(key =>
           grouped[key].sort((a, b) => a.number - b.number)
         );
-        this.loading = false;
         this.autoSelectSeats()
       },
       error: (error) => {
@@ -78,6 +78,7 @@ export class Seatoverview implements OnInit {
     this.selectedSeatsCount = this.reservationService.totalSeats() ?? 0;
 
     if (this.selectedSeatsCount <= 0 || this.seats.length === 0) {
+      this.loading = false;
       return;
     }
 
@@ -85,8 +86,27 @@ export class Seatoverview implements OnInit {
       for (let i = 0; i <= row.length - this.selectedSeatsCount; i++) {
         const block = row.slice(i, i + this.selectedSeatsCount)
         if (block.every(seat => seat.status === SeatStatus.Available)) {
-          block.forEach(seat => seat.status = SeatStatus.Selected)
-          return
+          const holdRequests = block.map(seat => {
+            const body = {
+              showId: this.showId,
+              seatId: seat.id,
+            };
+            return this.seatService.holdSeat(body);
+          });
+
+          forkJoin(holdRequests).subscribe({
+            next: (responses) => {
+              responses.forEach((response, idx) => {
+                block[idx].status = response;
+              });
+              this.loading = false;
+            },
+            error: (err) => {
+              console.error('Error holding seats:', err);
+              this.loading = false;
+            }
+          });
+          return;
         }
       }
     }
@@ -136,26 +156,26 @@ export class Seatoverview implements OnInit {
     });
   }
 
-singleGapExists(): boolean {
-  for (const row of this.seats) {
-    for (let i = 0; i < row.length; i++) {
-      const left = row[i - 1];
-      const current = row[i];
-      const right = row[i + 1];
+  singleGapExists(): boolean {
+    for (const row of this.seats) {
+      for (let i = 0; i < row.length; i++) {
+        const left = row[i - 1];
+        const current = row[i];
+        const right = row[i + 1];
 
-      // Check if current is available but surrounded by selected seats
-      if (
-        current?.status === SeatStatus.Available &&
-        (!left || left?.status === SeatStatus.Selected || left?.status === SeatStatus.Reserved) &&
-        (!right || right?.status === SeatStatus.Selected || right?.status === SeatStatus.Reserved)
-      ) {
-        this.snack.error('Reservering niet mogelijk: één lege stoel tussen geselecteerde stoelen.');
-        return true;
+        // Check if current is available but surrounded by selected seats
+        if (
+          current?.status === SeatStatus.Available &&
+          (!left || left?.status === SeatStatus.Selected || left?.status === SeatStatus.Reserved) &&
+          (!right || right?.status === SeatStatus.Selected || right?.status === SeatStatus.Reserved)
+        ) {
+          this.snack.error('Reservering niet mogelijk: één lege stoel tussen geselecteerde stoelen.');
+          return true;
+        }
       }
     }
+    return false;
   }
-  return false;
-}
 
   getRowLabel(index: number): string {
     return String.fromCharCode(65 + index);
@@ -188,5 +208,15 @@ singleGapExists(): boolean {
 
   getSelectedSeatsCount(): number {
     return this.getSelectedSeats().length;
+  }
+
+  cancel(): void {
+    const seats = this.getSelectedSeats()
+
+    seats.forEach(seat => {
+      this.seatService.unholdSeat(seat)
+      this.reservationService.emptyReservation()
+      this.router.navigateByUrl('/')
+    })
   }
 }
