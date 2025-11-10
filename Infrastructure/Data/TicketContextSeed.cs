@@ -1,13 +1,29 @@
 ﻿using System.Text.Json;
 using API.Enums;
 using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Data;
 
 public class TicketContextSeed
 {
-    public static async Task SeedAsync(TicketContext context)
+    public static async Task SeedAsync(TicketContext context, UserManager<AppUser>? userManager = null, RoleManager<IdentityRole>? roleManager = null)
     {
+        // Seed Roles first
+        if (roleManager != null && !await roleManager.RoleExistsAsync("Admin"))
+        {
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole("Admin"),
+                new IdentityRole("User")
+            };
+
+            foreach (var role in roles)
+            {
+                await roleManager.CreateAsync(role);
+            }
+        }
+
         var showData = await File.ReadAllTextAsync("../Infrastructure/Data/SeedData/Shows.json");
         var shows = JsonSerializer.Deserialize<List<Show>>(showData);
 
@@ -60,8 +76,6 @@ public class TicketContextSeed
             context.SeatHolds.AddRange(seatHolds);
             await context.SaveChangesAsync();
         }
-
     }
-
 }
 

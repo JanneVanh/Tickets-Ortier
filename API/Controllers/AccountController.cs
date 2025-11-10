@@ -6,36 +6,68 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("account")]
 [ApiController]
-public class AccountController(SignInManager<AppUser> signInManager) : ControllerBase
+public class AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<ActionResult> Register(RegisterDto registerDto)
     {
         var user = new AppUser
         {
-            Email = registerDto.Email
+            Email = registerDto.Email,
+            UserName = registerDto.Email,
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName
         };
 
-        var result = await signInManager.UserManager.CreateAsync(user, registerDto.Password);
+        var result = await userManager.CreateAsync(user, registerDto.Password);
 
         if (!result.Succeeded) return BadRequest(result.Errors);
 
-        return Ok();
+        // Assign default "User" role to new registrations
+        await userManager.AddToRoleAsync(user, "User");
+
+        return Ok(new { Message = "Registration successful" });
     }
 
     [HttpGet("auth-status")]
-    public ActionResult GetAuthState()
+    public async Task<ActionResult> GetAuthState()
     {
-        return Ok(new { IsAuthenticated = User.Identity?.IsAuthenticated ?? false });
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                return Ok(new 
+                { 
+                    IsAuthenticated = true,
+                    Email = user.Email,
+                    Roles = roles
+                });
+            }
+        }
+        
+        return Ok(new { IsAuthenticated = false });
     }
 
     [HttpGet("user")]
     [Authorize]
-    public ActionResult GetCurrentUser()
+    public async Task<ActionResult> GetCurrentUser()
     {
         if (User.Identity?.IsAuthenticated == true)
         {
-            return Ok(new { Email = User.Identity.Name });
+            var user = await userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                return Ok(new 
+                { 
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Roles = roles
+                });
+            }
         }
         return Unauthorized();
     }

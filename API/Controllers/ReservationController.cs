@@ -3,6 +3,7 @@ using API.Commands.SendReservationConfirmation;
 using Core.Entities;
 using Core.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -15,6 +16,7 @@ public class ReservationController(IReservationRepository reservationRepository,
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> GetReservations()
     {
         var result = await _reservationRepository.GetReservationsAsync();
@@ -37,6 +39,7 @@ public class ReservationController(IReservationRepository reservationRepository,
     }
 
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> UpdateReservation([FromBody] Reservation reservation)
     {
         _reservationRepository.UpdateReservation(reservation);
@@ -47,6 +50,7 @@ public class ReservationController(IReservationRepository reservationRepository,
     }
 
     [HttpDelete("{reservationId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteReservation(int reservationId)
     {
         var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);

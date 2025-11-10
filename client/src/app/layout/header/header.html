@@ -3,6 +3,9 @@
         <img routerLink="/" src="/images/logo-placeholder-image.png" alt="app logo" class="max-h-16">
         <nav class="flex gap-3 my-2 uppercase text-2xl">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            @if (canAccessReservations) {
+                <a routerLink="/reservations" routerLinkActive="active">Reservations</a>
+            }
         </nav>
         @if (accountService.currentUser()) {
         <button mat-button [mat-menu-trigger-for]="menu">
@@ -18,6 +21,12 @@
 } -->
 
 <mat-menu #menu="matMenu" class="px-5">
+    @if (canAccessReservations) {
+        <button mat-menu-item class="px-3" routerLink="/reservations">
+            <mat-icon>event_seat</mat-icon>
+            My Reservations
+        </button>
+    }
     <button mat-menu-item class="px-3" (click)="logout()">
         <mat-icon>logout</mat-icon>
         Logout

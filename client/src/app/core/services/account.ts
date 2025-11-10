@@ -4,6 +4,11 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../../shared/Models/User';
 
+export interface AuthState {
+  isAuthenticated: boolean;
+  user?: User;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,10 +25,8 @@ export class Account {
       withCredentials: true
     }).pipe(
       tap(() => {
-        // Set user with email from login form
-        if (values.email) {
-          this.currentUser.set({ email: values.email });
-        }
+        // After successful login, get the full user data with roles
+        this.getCurrentUser().subscribe();
       })
     );
   }
@@ -45,7 +48,7 @@ export class Account {
   }
 
   getAuthState() {
-    return this.http.get<{ isAuthenticated: boolean }>(this.baseUrl + 'account/auth-status', {
+    return this.http.get<AuthState>(this.baseUrl + 'account/auth-status', {
       withCredentials: true
     });
   }

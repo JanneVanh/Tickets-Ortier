@@ -23,6 +23,11 @@ export class Header {
   accountService = inject(Account)
   router = inject(Router)
   
+  get canAccessReservations(): boolean {
+    const user = this.accountService.currentUser();
+    return user !== null && user.roles && user.roles.includes('Admin');
+  }
+  
   logout(){
     this.accountService.logout().subscribe({
       next: () => {
