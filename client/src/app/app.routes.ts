@@ -7,6 +7,7 @@ import { Reservations } from './features/reservations/reservations';
 import { Seatoverview } from './features/seatoverview/seatoverview';
 import { roleGuard } from './core/guards/role-guard';
 import { Ticketinfo } from './features/ticketinfo/ticketinfo';
+import { Wiezijnwij } from './features/wiezijnwij/wiezijnwij';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -21,4 +22,5 @@ export const routes: Routes = [
     },
     { path: 'seatoverview/:showid', component: Seatoverview, },
     { path: 'ticketinfo', component: Ticketinfo, },
+    { path: 'wiezijnwij', component: Wiezijnwij, },
 ]
