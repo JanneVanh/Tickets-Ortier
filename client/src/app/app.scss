@@ -1,0 +1,11 @@
+.main-content {
+    margin-top: 6rem; // 96px - default desktop margin
+    
+    @media (max-width: 768px) {
+        margin-top: 4rem; // 64px - mobile margin
+    }
+    
+    @media (max-width: 480px) {
+        margin-top: 3.5rem; // 56px - small mobile margin
+    }
+}

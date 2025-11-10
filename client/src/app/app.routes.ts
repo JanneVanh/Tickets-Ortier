@@ -6,6 +6,7 @@ import { Login } from './features/account/login/login';
 import { Reservations } from './features/reservations/reservations';
 import { Seatoverview } from './features/seatoverview/seatoverview';
 import { roleGuard } from './core/guards/role-guard';
+import { Ticketinfo } from './features/ticketinfo/ticketinfo';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -18,8 +19,6 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: ['Admin'] }
     },
-    { 
-        path: 'seatoverview/:showid', 
-        component: Seatoverview, 
-    },
+    { path: 'seatoverview/:showid', component: Seatoverview, },
+    { path: 'ticketinfo', component: Ticketinfo, },
 ]

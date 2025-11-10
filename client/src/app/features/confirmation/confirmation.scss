@@ -1,0 +1,63 @@
+// Mobile responsive styles for confirmation page
+@media (max-width: 768px) {
+  .confirmation-container {
+    padding: 1rem;
+    text-align: center;
+    
+    .confirmation-message {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+    
+    .confirmation-details {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: left;
+      
+      .detail-item {
+        margin: 0.75rem 0;
+        font-size: 0.9rem;
+        
+        .label {
+          font-weight: 600;
+          display: inline-block;
+          margin-bottom: 0.25rem;
+        }
+      }
+    }
+    
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+      
+      button {
+        width: 100%;
+        min-height: 48px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-container {
+    padding: 0.75rem;
+    
+    .confirmation-message {
+      font-size: 1.125rem;
+    }
+    
+    .confirmation-details {
+      padding: 0.75rem;
+      
+      .detail-item {
+        font-size: 0.875rem;
+      }
+    }
+  }
+}

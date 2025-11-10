@@ -1,0 +1,35 @@
+@import '../../../../styles/variables';
+
+:host {
+    @media (max-width: 768px) {
+        width: 100%;
+        
+        // Ensure the summary is easily readable on mobile
+        .summary-container {
+            padding: 1rem;
+            margin: 0;
+        }
+        
+        // Make text touch-friendly sizes
+        .summary-text {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        // Ensure buttons are touch-friendly
+        button {
+            min-height: 44px;
+            min-width: 44px;
+            font-size: 16px;
+        }
+    }
+}
+
+.reservation-summary {
+    background-color: $tertiaryBackground-color;
+    color: $text-color;
+}
+
+.summary-title {
+    color: $secondaryBackground-color;
+}

@@ -13,6 +13,66 @@
 
 a {
     &.active{
-        color: #7d00fa
+        color: #e8b154
+    }
+}
+
+// Mobile-responsive header styles
+header {
+    background-color: rgba(10, 24, 155, 0.95);
+    backdrop-filter: blur(10px);
+    
+    @media (max-width: 768px) {
+        padding: 8px 16px;
+        max-height: none;
+        min-height: 60px;
+        
+        .flex {
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            
+            // On very small screens, use row layout but with smaller elements
+            @media (max-width: 480px) {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 4px;
+            }
+        }
+        
+        img {
+            max-height: 40px;
+            
+            @media (max-width: 480px) {
+                max-height: 32px;
+            }
+        }
+        
+        nav {
+            gap: 16px;
+            font-size: 16px;
+            
+            @media (max-width: 480px) {
+                gap: 8px;
+                font-size: 14px;
+            }
+        }
+        
+        button {
+            font-size: 14px;
+            
+            span {
+                display: none;
+                
+                @media (min-width: 480px) {
+                    display: inline;
+                }
+            }
+        }
+    }
+    
+    @media (max-width: 480px) {
+        padding: 4px 8px;
+        min-height: 50px;
     }
 }

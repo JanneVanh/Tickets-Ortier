@@ -1,13 +1,13 @@
 <div class="flex mt-32 gap-6">
     <div class="w-2/4">
         <div class="mx-auto max-w-4xl flex-1 space-y-6 w-full">
-            <div class="space-y-4 rounded-lg border border-gray-200 p-4 bg-white shadow-sm">
+            <div class="space-y-4 rounded-lg p-4 shadow-sm reservation-form">
                 <form [formGroup]="reservationForm">
-                    <p class="text-xl font-semibold">Contactgegevens</p>
+                    <p class="text-xl title">Contactgegevens</p>
                     <app-text-input label="Voornaam" formControlName="firstName" />
                     <app-text-input label="Familienaam" formControlName="lastName" />
                     <app-text-input label="Emailadres" formControlName="email" />
-                    <p class="text-xl font-semibold">Tickets</p>
+                    <p class="text-xl title">Tickets</p>
                     <app-text-input label="Aantal volwassenen (€14)" formControlName="numberOfAdults" type="number" />
                     <app-text-input label="Aantal kinderen (€7)" formControlName="numberOfChildren" type="number" />
                     <app-text-input label="Opmerking" formControlName="remark" />
@@ -23,7 +23,7 @@
                     }
 
                     <button mat-flat-button [disabled]="reservationForm.invalid" type="submit"
-                        class="w-full py-2 my-4" (click)="onNext()">Reserveer</button>
+                        class="w-full py-2 my-4 next" (click)="onNext()">Volgende</button>
                 </form>
             </div>
         </div>

@@ -1,16 +1,15 @@
 @use '@angular/material' as mat;
 
 @import "tailwindcss";
+@import 'styles/variables';
 
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
 }
 
 body {
@@ -22,33 +21,105 @@ body {
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
+  background-color: #0a189b; // Light gray background - change this to your desired color
+  color: #ffffff; // Dark text - change this to your desired text color 
   font: var(--mat-sys-body-medium);
 
   // Reset the user agent margin.
   margin: 0;
 }
 
+.text-primary {
+  color: #e8b154
+}
+
 .container {
-    @apply mx-auto max-w-screen-2xl
+  @apply mx-auto max-w-screen-2xl px-4;
+
+  // Responsive padding for mobile
+  @media (max-width: 768px) {
+    @apply px-2;
+  }
 }
 
 .mat-mdc-snack-bar-container.snack-error {
-    --mdc-snackbar-container-color: red;
-    --mat-snack-bar-button-color: white;
-    --mdc-snackbar-supporting-text-color: white;
+  --mdc-snackbar-container-color: red;
+  --mat-snack-bar-button-color: white;
+  --mdc-snackbar-supporting-text-color: white;
 }
 
 .mat-mdc-snack-bar-container.snack-success {
-    --mdc-snackbar-container-color: green;
-    --mat-snack-bar-button-color: white;
-    --mdc-snackbar-supporting-text-color: white;
+  --mdc-snackbar-container-color: green;
+  --mat-snack-bar-button-color: white;
+  --mdc-snackbar-supporting-text-color: white;
 }
 
 .mdc-notched-outline__notch {
-    border-right-style: none !important;
+  border-right-style: none !important;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+  @include mat.table-overrides((
+      background-color: $tertiaryBackground-color,
+      header-headline-color: $secondaryBackground-color,
+      row-item-label-text-color: $text-color,
+      header-headline-weight: 500px,
+    ));
+
+  @include mat.slide-toggle-overrides((
+      selected-track-outline-color: $secondaryBackground-color,
+      label-text-color: $text-color
+    ));
+
+  @include mat.paginator-overrides((
+    container-text-color: $text-color,
+    page-size-select-width: 75px,
+    enabled-icon-color: $text-color,
+    disabled-icon-color: $text-color,
+  ));
+
+  @include mat.select-overrides((
+    panel-background-color: $text-color,
+    enabled-trigger-text-color: $text-color,
+  ));
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Add mobile-responsive base styles
+* {
+  box-sizing: border-box;
+}
+
+// Ensure content doesn't overflow on small screens
+html,
+body {
+  overflow-x: hidden;
+}
+
+// Make buttons and form elements touch-friendly on mobile
+@media (max-width: 768px) {
+
+  button:not(.seat),
+  .mat-mdc-button:not(.seat),
+  .mat-mdc-raised-button:not(.seat) {
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 16px;
+  }
+
+  // Prevent zoom on input focus on iOS
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
