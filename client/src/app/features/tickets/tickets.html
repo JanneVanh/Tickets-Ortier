@@ -8,8 +8,20 @@
                     <app-text-input label="Familienaam" formControlName="lastName" />
                     <app-text-input label="Emailadres" formControlName="email" />
                     <p class="text-xl title">Tickets</p>
-                    <app-text-input label="Aantal volwassenen (€14)" formControlName="numberOfAdults" type="number" />
-                    <app-text-input label="Aantal kinderen (€7)" formControlName="numberOfChildren" type="number" />
+                    <div class="ticket-inputs">
+                        <app-text-input formControlName="numberOfAdults" label="Number of Adults" type="number">
+                        </app-text-input>
+
+                        <app-text-input formControlName="numberOfChildren" label="Number of Children" type="number">
+                        </app-text-input>
+
+                        <!-- Error message display -->
+                        @if (totalTicketsError) {
+                        <div class="ticket-validation" class="error-message">
+                            {{ totalTicketsError }}
+                        </div>
+                        }
+                    </div>
                     <app-text-input label="Opmerking" formControlName="remark" />
 
                     @if (validationErrors) {
@@ -22,8 +34,8 @@
                     </div>
                     }
 
-                    <button mat-flat-button [disabled]="reservationForm.invalid" type="submit"
-                        class="w-full py-2 my-4 next" (click)="onNext()">Volgende</button>
+                    <button mat-flat-button [disabled]="!isFormValid" type="submit" class="w-full py-2 my-4 next"
+                        (click)="onNext()">Volgende</button>
                 </form>
             </div>
         </div>

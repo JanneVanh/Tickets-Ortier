@@ -35,6 +35,23 @@
     background-color: $secondaryBackground-color;
 }
 
+.error-message {
+  color: #f44336;
+  font-size: 0.875rem;
+  margin-top: 8px;
+  padding: 4px 0;
+}
+
+.ticket-total {
+  color: #666;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.ticket-validation {
+  margin-top: 8px;
+}
+
 // Ensure form elements are touch-friendly on mobile
 @media (max-width: 768px) {
     .space-y-4 {
