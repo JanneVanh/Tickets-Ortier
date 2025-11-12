@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Reflection;
+using System.Text.Json;
 using API.Enums;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,8 @@ public class TicketContextSeed
 {
     public static async Task SeedAsync(TicketContext context, UserManager<AppUser>? userManager = null, RoleManager<IdentityRole>? roleManager = null)
     {
+        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        
         // Seed Roles first
         if (roleManager != null && !await roleManager.RoleExistsAsync("Admin"))
         {
@@ -24,7 +27,8 @@ public class TicketContextSeed
             }
         }
 
-        var showData = await File.ReadAllTextAsync("../Infrastructure/Data/SeedData/Shows.json");
+        var showData = await File
+            .ReadAllTextAsync(path + @"/Data/SeedData/Shows.json");
         var shows = JsonSerializer.Deserialize<List<Show>>(showData);
 
         if (!context.Shows.Any())
@@ -35,7 +39,8 @@ public class TicketContextSeed
             await context.SaveChangesAsync();
         }
 
-        var seatData = await File.ReadAllTextAsync("../Infrastructure/Data/SeedData/Seats.json");
+        var seatData = await File
+            .ReadAllTextAsync(path + @"/Data/SeedData/Seats.json");
         var seats = JsonSerializer.Deserialize<List<Seat>>(seatData);
 
         if (!context.Seats.Any())

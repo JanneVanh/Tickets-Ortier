@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from '../../core/services/reservation';
@@ -24,6 +24,23 @@ export class Tickets implements OnInit {
   validationErrors?: string[]
   showId: number = 0;
   private router = inject(Router)
+
+  // Custom validator for maximum tickets
+  private maxTicketsValidator = (control: AbstractControl): ValidationErrors | null => {
+    const numberOfAdults = parseInt(control.get('numberOfAdults')?.value) || 0;
+    const numberOfChildren = parseInt(control.get('numberOfChildren')?.value) || 0;
+    const totalTickets = numberOfAdults + numberOfChildren;
+
+    if (totalTickets > 10) {
+      return { maxTicketsExceeded: { max: 10, actual: totalTickets } };
+    }
+
+    if (totalTickets === 0) {
+      return { noTicketsSelected: true };
+    }
+
+    return null;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -70,10 +87,10 @@ export class Tickets implements OnInit {
     numberOfAdults: [''],
     numberOfChildren: [''],
     remark: [''],
-  })
+  }, { validators: this.maxTicketsValidator })
 
   onNext(): void {
-    if (this. 
+    if (this.
       reservationForm.valid) {
       const formValue = this.reservationForm.value;
 
@@ -97,6 +114,27 @@ export class Tickets implements OnInit {
     } else {
       this.reservationForm.markAllAsTouched();
     }
+  }
+
+  // Helper method to get form errors for display
+  get totalTicketsError(): string | null {
+    const formErrors = this.reservationForm.errors;
+    if (formErrors?.['maxTicketsExceeded']) {
+      return `Maximaal 10 tickets toegestaan. U heeft ${formErrors['maxTicketsExceeded'].actual} tickets geselecteerd.`;
+    }
+    return null;
+  }
+
+  // Helper to check if form is valid for button state
+  get isFormValid(): boolean {
+    return this.reservationForm.valid;
+  }
+
+  // Helper to get total tickets for display
+  get totalTickets(): number {
+    const adults = parseInt(this.reservationForm.get('numberOfAdults')?.value ?? '') || 0;
+    const children = parseInt(this.reservationForm.get('numberOfChildren')?.value ?? '') || 0;
+    return adults + children;
   }
 }
 

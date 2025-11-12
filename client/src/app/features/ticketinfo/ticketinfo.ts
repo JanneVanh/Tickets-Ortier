@@ -28,27 +28,13 @@ export class Ticketinfo {
   };
 
   ticketPrices = [
-    { type: 'volwassene', amount: '€14' },
-    { type: 'kind (-12)', amount: '€7' }
+    { type: 'Volwassene', amount: '€14' },
+    { type: 'Kind (-12 jaar)', amount: '€7' }
   ];
 
   vipInfo = {
     description: `Een deel van de opbrengst van het concert gaat naar Tejo.be </br></br>
-  Lorem ipsum dolor sit amet consectetur adipiscing elit. 
-  Quisque faucibus ex sapien vitae pellentesque sem placerat. 
-  In id cursus mi pretium tellus duis convallis. 
-  Tempus leo eu aenean sed diam urna tempor. 
-  Pulvinar vivamus fringilla lacus nec metus bibendum egestas. 
-  Iaculis massa nisl malesuada lacinia integer nunc posuere. 
-  Ut hendrerit semper vel class aptent taciti sociosqu. 
-  Ad litora torquent per conubia nostra inceptos himenaeos.</br></br>
-  Lorem ipsum dolor sit amet consectetur adipiscing elit. 
-  Quisque faucibus ex sapien vitae pellentesque sem placerat. 
-  In id cursus mi pretium tellus duis convallis. 
-  Tempus leo eu aenean sed diam urna tempor. 
-  Pulvinar vivamus fringilla lacus nec metus bibendum egestas. 
-  Iaculis massa nisl malesuada lacinia integer nunc posuere. 
-  Ut hendrerit semper vel class aptent taciti sociosqu. 
-  Ad litora torquent per conubia nostra inceptos himenaeos.`
+  TEJO staat voor "Therapeuten voor Jongeren". Dit is een initiatief dat zich inzet voor het mentaal welzijn van jongeren van 10 tot 20 jaar. 
+  Ze bieden gratis en anoniem een aantal gesprekken aan bij een professionele therapeut die werkt op vrijwillige basis . `
   };
 }

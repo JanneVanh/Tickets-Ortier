@@ -87,10 +87,15 @@ app.UseCors("AllowAngularApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseDefaultFiles(); // wwwroot
+app.UseStaticFiles(); // angular app uses static files
+
 app.MapIdentityApi<AppUser>();
 app.MapGroup("api").MapIdentityApi<AppUser>();
 
 app.MapControllers();
+app.MapFallbackToController("Index", "Fallback");
 
 try
 {
