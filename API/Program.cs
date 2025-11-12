@@ -28,7 +28,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<TicketContext>(opt =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        provideroptions => provideroptions.EnableRetryOnFailure());
 });
 
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
