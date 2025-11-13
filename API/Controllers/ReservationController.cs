@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [ApiController]
-[Route("[Controller]")]
+[Route("api/[Controller]")]
 public class ReservationController(IReservationRepository reservationRepository, IMediator mediator) : ControllerBase
 {
     private readonly IReservationRepository _reservationRepository = reservationRepository;

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [ApiController]
-[Route("[Controller]")]
+[Route("api/[Controller]")]
 public class SeatController(ISeatRepository seatRepository, IMediator mediator, ISeatHoldRepository seatHoldRepository) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
