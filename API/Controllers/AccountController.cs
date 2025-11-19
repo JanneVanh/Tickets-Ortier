@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/account")]
 [ApiController]
+[Route("api/[Controller]")]
 public class AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager) : ControllerBase
 {
     [HttpPost("register")]

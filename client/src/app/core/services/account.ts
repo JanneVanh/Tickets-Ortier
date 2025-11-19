@@ -20,7 +20,7 @@ export class Account {
   login(values: any) {
     let params = new HttpParams();
     params = params.append('useCookies', true);
-    return this.http.post(this.baseUrl + 'api/login', values, {
+    return this.http.post(this.baseUrl + 'login', values, {
       params,
       withCredentials: true
     }).pipe(
