@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from '../../core/services/reservation';
 import { ReservationSummary } from "../../shared/components/reservation-summary/reservation-summary";
 import { TextInput } from "../../shared/components/text-input/text-input";
+import { Show } from '../../shared/Models/Show';
+import { ShowService } from '../../core/services/showService';
 
 @Component({
   selector: 'app-tickets',
@@ -24,15 +26,20 @@ export class Tickets implements OnInit {
   validationErrors?: string[]
   showId: number = 0;
   private router = inject(Router)
+  shows: Show[] = []
+  private showService = inject(ShowService)
+  maxTickets: number = 10;
 
   // Custom validator for maximum tickets
   private maxTicketsValidator = (control: AbstractControl): ValidationErrors | null => {
     const numberOfAdults = parseInt(control.get('numberOfAdults')?.value) || 0;
     const numberOfChildren = parseInt(control.get('numberOfChildren')?.value) || 0;
     const totalTickets = numberOfAdults + numberOfChildren;
+    const availableTickets = this.shows.find(s => s.id === this.showId)?.availableTickets ?? 10;
+    this.maxTickets = availableTickets > 10 ? 10 : availableTickets;
 
-    if (totalTickets > 10) {
-      return { maxTicketsExceeded: { max: 10, actual: totalTickets } };
+    if (totalTickets > this.maxTickets) {
+      return { maxTicketsExceeded: { max: this.maxTickets, actual: totalTickets } };
     }
 
     if (totalTickets === 0) {
@@ -46,6 +53,10 @@ export class Tickets implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       const showIdParam = params.get('showid');
       this.showId = showIdParam !== null ? Number(showIdParam) : 0;
+    })
+
+    this.showService.getShows().subscribe(response => {
+      this.shows = response
     })
 
     this.setupFormSubscriptions();
@@ -120,7 +131,7 @@ export class Tickets implements OnInit {
   get totalTicketsError(): string | null {
     const formErrors = this.reservationForm.errors;
     if (formErrors?.['maxTicketsExceeded']) {
-      return `Maximaal 10 tickets toegestaan. U heeft ${formErrors['maxTicketsExceeded'].actual} tickets geselecteerd.`;
+      return `Maximaal ${this.maxTickets} tickets toegestaan. U heeft ${formErrors['maxTicketsExceeded'].actual} tickets geselecteerd.`;
     }
     return null;
   }
