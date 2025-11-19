@@ -18,6 +18,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Angular dependencies
+        run: |
+          cd client
+          npm ci
+
+      - name: Build Angular app
+        run: |
+          cd client
+          npm run build
+
+      - name: Copy Angular build to API/wwwroot
+        run: |
+          if (Test-Path -Path "client/dist") {
+            if (!(Test-Path -Path "API/wwwroot")) { New-Item -ItemType Directory -Path "API/wwwroot" | Out-Null }
+            Copy-Item -Path "client/dist/*" -Destination "API/wwwroot/" -Recurse -Force
+          }
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
