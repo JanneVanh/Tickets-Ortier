@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { ReservationService } from '../../core/services/reservation';
 import { SeatService } from '../../core/services/seat';
+import { Snackbar } from '../../core/services/snackbar';
 import { Seat } from '../../shared/Models/Seat';
 import { SeatStatus } from '../../shared/Models/SeatStatus';
-import { MatButton } from '@angular/material/button';
-import { ReservationService } from '../../core/services/reservation';
-import { Snackbar } from '../../core/services/snackbar';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-seatoverview',
@@ -29,6 +29,7 @@ export class Seatoverview implements OnInit {
   reservationService = inject(ReservationService)
   private snack = inject(Snackbar)
   private router = inject(Router)
+  noBlockLeft: boolean = false;
 
   ngOnInit(): void {
     this.getShowInfo();
@@ -86,30 +87,57 @@ export class Seatoverview implements OnInit {
       for (let i = 0; i <= row.length - this.selectedSeatsCount; i++) {
         const block = row.slice(i, i + this.selectedSeatsCount)
         if (block.every(seat => seat.status === SeatStatus.Available)) {
-          const holdRequests = block.map(seat => {
-            const body = {
-              showId: this.showId,
-              seatId: seat.id,
-            };
-            return this.seatService.holdSeat(body);
-          });
-
-          forkJoin(holdRequests).subscribe({
-            next: (responses) => {
-              responses.forEach((response, idx) => {
-                block[idx].status = response;
-              });
-              this.loading = false;
-            },
-            error: (err) => {
-              console.error('Error holding seats:', err);
-              this.loading = false;
-            }
-          });
+          if (this.wouldCreateSingleGap(row, i, this.selectedSeatsCount)) continue;
+          this.holdRequests(block);
           return;
         }
       }
     }
+
+    this.noBlockLeft = true
+    const availableSeats: Seat[] = [];
+
+    for (const row of this.seats) {
+      for (const seat of row) {
+        if (seat.status === SeatStatus.Available) {
+          availableSeats.push(seat);
+          if (availableSeats.length === this.selectedSeatsCount) {
+            break;
+          }
+        }
+      }
+      if (availableSeats.length === this.selectedSeatsCount) {
+        break;
+      }
+    }
+
+    if (availableSeats.length > 0) {
+      this.holdRequests(availableSeats)
+    }
+  }
+
+  holdRequests(seats: Seat[]): void {
+    const holdRequests = seats.map(seat => {
+      const body = {
+        showId: this.showId,
+        seatId: seat.id,
+      };
+      return this.seatService.holdSeat(body);
+    });
+
+    forkJoin(holdRequests).subscribe({
+      next: (responses) => {
+        responses.forEach((response, idx) => {
+          seats[idx].status = response;
+        });
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error holding seats:', err);
+        this.loading = false;
+      }
+    });
+    return;
   }
 
   selectSeat(seat: Seat): void {
@@ -135,7 +163,7 @@ export class Seatoverview implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.singleGapExists()) return;
+    if (!this.noBlockLeft && this.singleGapExists()) return;
 
     const reservationData = {
       reservation: this.reservationService.reservation(),
@@ -174,6 +202,32 @@ export class Seatoverview implements OnInit {
         }
       }
     }
+    return false;
+  }
+
+  wouldCreateSingleGap(row: Seat[], startIndex: number, count: number): boolean {
+    const endIndex = startIndex + count - 1;
+
+    // Check left side: is there exactly one available seat before the block?
+    const leftSeat = row[startIndex - 1];
+    const leftLeftSeat = row[startIndex - 2];
+    if (
+      leftSeat?.status === SeatStatus.Available &&
+      (!leftLeftSeat || leftLeftSeat.status !== SeatStatus.Available)
+    ) {
+      return true;
+    }
+
+    // Check right side: is there exactly one available seat after the block?
+    const rightSeat = row[endIndex + 1];
+    const rightRightSeat = row[endIndex + 2];
+    if (
+      rightSeat?.status === SeatStatus.Available &&
+      (!rightRightSeat || rightRightSeat.status !== SeatStatus.Available)
+    ) {
+      return true;
+    }
+
     return false;
   }
 

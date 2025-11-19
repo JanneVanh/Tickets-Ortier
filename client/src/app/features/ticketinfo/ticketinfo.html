@@ -66,7 +66,7 @@
         <div class="navigation-buttons">
 
             @for (show of shows; track $index) {
-            <button mat-raised-button routerLink="'/tickets/' + show.id" routerLinkActive="active">
+            <button mat-raised-button [routerLink]="'/tickets/' + show.id" routerLinkActive="active">
                 <mat-icon>local_activity</mat-icon>
                 <span>{{ show.day }}</span>
             </button>

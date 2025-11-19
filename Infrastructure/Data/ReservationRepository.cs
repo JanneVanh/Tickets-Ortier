@@ -10,7 +10,7 @@ public class ReservationRepository(TicketContext ticketContext) : IReservationRe
 
     public async Task AssignSeatsAsync(IEnumerable<int> seatIds, Reservation reservation)
     {
-        var existingSeats = await _ticketContext.ReservationSeats.Where(rs => rs.Id == reservation.Id).ToListAsync();
+        var existingSeats = await _ticketContext.ReservationSeats.Where(rs => rs.ReservationId == reservation.Id).ToListAsync();
         if (existingSeats is not null && existingSeats.Count > 0)
             _ticketContext.ReservationSeats.RemoveRange(existingSeats);
 
@@ -27,8 +27,8 @@ public class ReservationRepository(TicketContext ticketContext) : IReservationRe
                 ShowId = reservation.ShowId
             };
             _ticketContext.ReservationSeats.Add(reservationSeat);
-            await _ticketContext.SaveChangesAsync();
         }
+        await _ticketContext.SaveChangesAsync();
     }
 
     public async Task<Reservation?> CreateReservation(Reservation reservation)
