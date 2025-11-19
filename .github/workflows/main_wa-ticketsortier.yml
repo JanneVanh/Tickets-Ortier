@@ -48,6 +48,9 @@ jobs:
         with:
           name: .net-app
           path: ./publish
+
+      - name: List publish folder
+        run: dir publish /s
       
       - name: Login to Azure
         uses: azure/login@v2
