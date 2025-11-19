@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("account")]
+[Route("api/account")]
 [ApiController]
 public class AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager) : ControllerBase
 {

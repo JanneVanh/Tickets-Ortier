@@ -1,7 +1,7 @@
 <div class="seat-overview-container">
   @if (loading) {
   <div class="loading-message">
-    <p>Loading seats...</p>
+    <p>Stoelen laden...</p>
   </div>
   } @else if (showId && seats.length > 0) {
   <div class="seat-section">
@@ -70,7 +70,7 @@
 
   @if (showId && seats.length === 0 && !loading) {
   <div class="no-seats-message">
-    <p>No seats available for this show.</p>
+    <p>Geen stoelen beschikbaar voor deze show.</p>
   </div>
   }
 </div>
