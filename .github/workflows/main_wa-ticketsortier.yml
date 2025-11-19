@@ -50,7 +50,7 @@ jobs:
           path: ./publish
 
       - name: List publish folder
-        run: dir publish /s
+        run: Get-ChildItem -Recurse ./publish
       
       - name: Login to Azure
         uses: azure/login@v2
