@@ -15,10 +15,10 @@
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 40px;
+    justify-self: center;
 
     @media (max-width: 480px) {
         gap: 12px;
-        flex-direction: column;
         width: 100%;
         max-width: 280px;
     }
@@ -26,9 +26,9 @@
     button {
         background-color: $secondaryBackground-color;
         color: $text-color;
+        width: 135px;
 
         @media (max-width: 480px) {
-            width: 100%;
             min-height: 48px;
             font-size: 16px;
         }
@@ -74,6 +74,26 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(74, 144, 164, 0.3);
+
+    h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: $secondaryBackground-color;
+        margin: 0;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+}
+
+.ticket-header {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    gap: 12px;
+    margin-top: 20px;
     margin-bottom: 20px;
     padding-bottom: 15px;
     border-bottom: 2px solid rgba(74, 144, 164, 0.3);
@@ -149,6 +169,10 @@
     line-height: 1.5 !important;
     text-align: justify;
     color: $text-color !important;
+}
+
+.sold-out {
+    color: $secondaryBackground-color !important;
 }
 
 @media (max-width: 480px) {

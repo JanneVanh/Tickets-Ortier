@@ -25,6 +25,8 @@ public class CreateReservationCommandHandler(
 
             var show = await _showRepository.GetShowByIdAsync(reservation.ShowId);
             if (show is null) throw new InvalidOperationException("Show not found");
+            show.AvailableTickets -= reservation.NumberOfAdults + reservation.NumberOfChildren;
+            _showRepository.UpdateShow(show);
 
             await _reservationRepository.AssignSeatsAsync(request.SeatIds, reservation);
 

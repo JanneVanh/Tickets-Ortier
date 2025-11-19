@@ -17,5 +17,14 @@ public class ShowRepository(TicketContext ticketContext) : IShowRepository
     {
         return await _ticketContext.Shows.ToListAsync();
     }
-}
 
+    public async Task<IReadOnlyCollection<Show>> GetShowsWithTicketsAsync()
+    {
+        return await _ticketContext.Shows.Where(s => s.AvailableTickets > 0).ToListAsync();
+    }
+
+    public void UpdateShow(Show show)
+    {
+        _ticketContext.Entry(show).State = EntityState.Modified;
+    }
+}

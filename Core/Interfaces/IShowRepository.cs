@@ -6,4 +6,6 @@ public interface IShowRepository
 {
     Task<IReadOnlyCollection<Show>> GetShowsAsync();
     Task<Show?> GetShowByIdAsync(int id);
+    Task<IReadOnlyCollection<Show>> GetShowsWithTicketsAsync();
+    void UpdateShow(Show show);
 }

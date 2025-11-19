@@ -14,4 +14,8 @@ export class ShowService {
   getShows(): Observable<Show[]> {
     return this.http.get<Show[]>(this.baseUrl + 'show')
   }
+
+  getShowsWithTickets(): Observable<Show[]> {
+    return this.http.get<Show[]>(this.baseUrl + 'show/withtickets')
+  }
 }

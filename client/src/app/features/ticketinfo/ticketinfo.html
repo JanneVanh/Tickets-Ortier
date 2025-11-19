@@ -1,3 +1,4 @@
+@if (shows) {
 <div class="ticket-info-container">
     <div class="info-grid">
         <div class="info-card">
@@ -6,8 +7,15 @@
                 <h3>DATA & UREN</h3>
             </div>
             <div class="card-content">
-                <div class="date-info" *ngFor="let show of showDates">
-                    <p><strong>{{ show.day }}</strong> {{ show.date }} om <span class="time">{{ show.time }}</span></p>
+                <div class="date-info">
+                    @for (show of showDates; track $index) {
+                    <p><strong>{{ show.day }}</strong> {{ show.date }} om <span class="time">{{ show.time }}</span>
+                        @if (showIsSoldOut(show.day)) {
+                        <strong class="sold-out"> UITVERKOCHT</strong>
+                        }
+                    </p>
+                    }
+
                 </div>
             </div>
         </div>
@@ -30,10 +38,12 @@
                 <h3>PRIJZEN</h3>
             </div>
             <div class="card-content">
-                <div class="price-item" *ngFor="let price of ticketPrices">
+                @for (price of ticketPrices; track $index) {
+                <div class="price-item">
                     <span class="price-label">{{ price.type }}:</span>
                     <span class="price-value">{{ price.amount }}</span>
                 </div>
+                }
             </div>
         </div>
     </div>
@@ -48,15 +58,20 @@
         </div>
     </div>
 
-    <div class="navigation-buttons">
-        <button mat-raised-button routerLink="/tickets/1" routerLinkActive="active">
-            <mat-icon>local_activity</mat-icon>
-            <span>Zaterdag</span>
-        </button>
+    <div>
+        <div class="ticket-header">
+            <mat-icon class="card-icon star-icon">local_activity</mat-icon>
+            <h3>Koop hier je tickets:</h3>
+        </div>
+        <div class="navigation-buttons">
 
-        <button mat-raised-button routerLink="/tickets/2" routerLinkActive="active">
-            <mat-icon>local_activity</mat-icon>
-            <span>Zondag</span>
-        </button>
+            @for (show of shows; track $index) {
+            <button mat-raised-button routerLink="'/tickets/' + show.id" routerLinkActive="active">
+                <mat-icon>local_activity</mat-icon>
+                <span>{{ show.day }}</span>
+            </button>
+            }
+        </div>
     </div>
 </div>
+}
