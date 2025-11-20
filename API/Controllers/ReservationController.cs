@@ -62,4 +62,14 @@ public class ReservationController(IReservationRepository reservationRepository,
 
         return BadRequest("Problem deleting reservation");
     }
+
+    [HttpPost("sendTickets")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult> SendTickets()
+    {
+        var command = new SendTicketsCommand();
+        var result = await _mediator.Send(command);
+
+        return Ok(result);
+    }
 }
