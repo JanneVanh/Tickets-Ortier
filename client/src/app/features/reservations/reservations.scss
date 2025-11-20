@@ -5,18 +5,18 @@
 .mat-mdc-table {
   width: 100%;
   margin-bottom: 1rem;
-  
+
   @media (max-width: 768px) {
     // Make table scrollable horizontally on small screens
     display: block;
     overflow-x: auto;
     white-space: nowrap;
-    
+
     .mat-mdc-row,
     .mat-mdc-header-row {
       display: table-row;
     }
-    
+
     .mat-mdc-cell,
     .mat-mdc-header-cell {
       padding: 8px 4px;
@@ -28,13 +28,13 @@
 .mat-mdc-paginator {
   margin-top: 1rem;
   background: transparent;
-  
+
   @media (max-width: 768px) {
     // Make paginator more compact on mobile
     .mat-mdc-paginator-container {
       padding: 0 8px;
     }
-    
+
     .mat-mdc-paginator-page-size {
       font-size: 12px;
     }
@@ -51,11 +51,11 @@
   width: 30%;
   margin-top: 150px;
   margin-bottom: 50px;
-  
+
   @media (max-width: 768px) {
     width: 100%;
     margin-bottom: 1rem;
-    
+
     .mat-mdc-form-field {
       width: 100%;
     }
@@ -66,34 +66,30 @@
 @media (max-width: 768px) {
   .reservations-container {
     padding: 1rem;
-    
+
     .filters-and-table {
       flex-direction: column;
       gap: 1rem;
     }
-    
+
     // Stack filters above table on mobile
     .filter-section {
       width: 100%;
       order: 1;
     }
-    
+
     .table-section {
       width: 100%;
       order: 2;
       overflow-x: auto;
     }
   }
-  
-  // Make action buttons touch-friendly
-  .action-buttons {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    
-    button {
-      min-height: 36px;
-      font-size: 12px;
-    }
+}
+
+
+.send-tickets {
+  button {
+    background-color: $secondaryBackground-color;
+    color: $text-color;
   }
 }

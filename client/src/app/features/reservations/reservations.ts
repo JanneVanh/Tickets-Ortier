@@ -8,9 +8,11 @@ import { Reservation } from '../../shared/Models/Reservation';
 import { Snackbar } from '../../core/services/snackbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButton } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -24,7 +26,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatInputModule,
     MatIconModule,
     FormsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatButton,
+    MatIcon
   ],
   templateUrl: './reservations.html',
   styleUrl: './reservations.scss'
@@ -36,13 +40,15 @@ export class Reservations implements OnInit, AfterViewInit {
   snackbar = inject(Snackbar);
   cdr = inject(ChangeDetectorRef);
   dataSource = new MatTableDataSource<Reservation>([]);
-  columnsToDisplay = ['ID', 'Email', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid'];
+  columnsToDisplay = ['ID', 'Email', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid', 'emailSent'];
   searchCode: string = ''
   filteredData: Reservation[] = [];
   showOnlyUnpaid: boolean = false;
   originalData: Reservation[] = [];
+  sendingTickets: boolean = false;
 
   private _reservations: Reservation[] = [];
+  private router = inject(Router);
 
   get reservations(): Reservation[] {
     return this._reservations;
@@ -61,7 +67,10 @@ export class Reservations implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log('ReservationComponent ngOnInit - fetching reservations...');
+    this.getReservations();
+  }
+
+  getReservations(): void {
     this.reservationService.getReservations().subscribe({
       next: response => {
         console.log('Reservations received:', response);
@@ -140,5 +149,21 @@ export class Reservations implements OnInit, AfterViewInit {
     console.log('Final filtered data length:', filtered.length);
     this.dataSource.data = filtered;
   }
-}
 
+  sendTickets(): void {
+    this.sendingTickets = true;
+
+    this.reservationService.sendTickets().subscribe({
+      next: () => {
+        this.snackbar.success('Tickets succesvol verzonden.');
+        this.sendingTickets = false;
+        this.getReservations();
+      },
+      error: (error) => {
+        console.error('Error sending tickets:', error);
+        this.snackbar.error('Fout bij het verzenden van tickets.');
+        this.sendingTickets = false;
+      }
+    });
+  }
+}

@@ -124,7 +124,7 @@ public class PdfService(IShowRepository showRepository, ISeatRepository seatRepo
         return memoryStream.ToArray();
     }
 
-    public async Task<List<byte[]>> GenerateAllTicketPdfsAsync(Reservation reservation)
+    public async Task<byte[]> GenerateAllTicketsPdfAsync(Reservation reservation)
     {
         var seats = await _seatRepository.GetSeatsForReservationAsync(reservation.Id);
         var pdfList = new List<byte[]>();
@@ -135,6 +135,21 @@ public class PdfService(IShowRepository showRepository, ISeatRepository seatRepo
             pdfList.Add(pdf);
         }
 
-        return pdfList;
+        // make one pdf of all pages
+        using var outputStream = new MemoryStream();
+        using (var pdfWriter = new PdfWriter(outputStream))
+        using (var mergedPdf = new PdfDocument(pdfWriter))
+        {
+            var merger = new iText.Kernel.Utils.PdfMerger(mergedPdf);
+
+            foreach (var pdfBytes in pdfList)
+            {
+                using var pdfStream = new MemoryStream(pdfBytes);
+                using var pdfDoc = new PdfDocument(new PdfReader(pdfStream));
+                merger.Merge(pdfDoc, 1, pdfDoc.GetNumberOfPages());
+            }
+            mergedPdf.Close();
+        }
+        return outputStream.ToArray();
     }
 }

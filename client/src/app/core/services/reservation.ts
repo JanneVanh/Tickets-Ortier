@@ -51,4 +51,8 @@ export class ReservationService {
   emptyReservation() {
     this.reservation.set(null)
   }
+
+  sendTickets() {
+    return this.http.post(this.baseUrl + 'reservation/sendTickets', {})
+  }
 }

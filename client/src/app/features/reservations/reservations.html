@@ -9,6 +9,13 @@
     </mat-slide-toggle>
 </div>
 
+<div class="send-tickets">
+    <button mat-raised-button (click)="sendTickets()">
+        <mat-icon>mail</mat-icon>
+        <span>{{sendingTickets ? "Tickets versturen ..." : "Stuur tickets"}}</span>
+    </button>
+</div>
+
 @if (dataSource.data.length > 0)
 {
 <table mat-table [dataSource]="dataSource">
@@ -61,6 +68,15 @@
         <th mat-header-cell *matHeaderCellDef> Is betaald </th>
         <td mat-cell *matCellDef="let element">
             <mat-checkbox [checked]="element.isPaid" (change)="togglePaidStatus(element)">
+            </mat-checkbox>
+        </td>
+    </ng-container>
+
+    <!-- isPaid Column -->
+    <ng-container matColumnDef="emailSent">
+        <th mat-header-cell *matHeaderCellDef> Tickets verzonden </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.emailSent" disabled>
             </mat-checkbox>
         </td>
     </ng-container>
