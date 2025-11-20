@@ -40,7 +40,7 @@ export class Reservations implements OnInit, AfterViewInit {
   snackbar = inject(Snackbar);
   cdr = inject(ChangeDetectorRef);
   dataSource = new MatTableDataSource<Reservation>([]);
-  columnsToDisplay = ['ID', 'Email', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid', 'emailSent'];
+  columnsToDisplay = ['ID', 'Email', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid', 'emailSent', 'Delete'];
   searchCode: string = ''
   filteredData: Reservation[] = [];
   showOnlyUnpaid: boolean = false;
@@ -163,6 +163,19 @@ export class Reservations implements OnInit, AfterViewInit {
         console.error('Error sending tickets:', error);
         this.snackbar.error('Fout bij het verzenden van tickets.');
         this.sendingTickets = false;
+      }
+    });
+  }
+
+  deleteReservation(id: number): void {
+    this.reservationService.deleteReservation(id).subscribe({
+      next: () => {
+        this.snackbar.success('Reservering succesvol verwijderd.');
+        this.getReservations();
+      },
+      error: (error) => {
+        console.error('Error deleting reservation:', error);
+        this.snackbar.error('Fout bij het verwijderen van de reservering.');
       }
     });
   }

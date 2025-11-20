@@ -6,6 +6,13 @@ namespace Infrastructure.Data;
 
 public class SeatRepository(TicketContext ticketContext) : ISeatRepository
 {
+    public async Task DeleteSeatsForReservationAsync(int reservationId)
+    {
+        var seatsToSetAsAvailable = await ticketContext.ReservationSeats.Where(r => r.ReservationId == reservationId).ToListAsync();
+        ticketContext.ReservationSeats.RemoveRange(seatsToSetAsAvailable);
+        return;
+    }
+
     public async Task<IReadOnlyCollection<Seat>> GetSeatsAsync()
     {
         return await ticketContext.Seats.ToListAsync();

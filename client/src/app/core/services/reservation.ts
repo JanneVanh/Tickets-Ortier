@@ -55,4 +55,8 @@ export class ReservationService {
   sendTickets() {
     return this.http.post(this.baseUrl + 'reservation/sendTickets', {})
   }
+
+  deleteReservation(id: number) {
+    return this.http.delete(this.baseUrl + 'reservation/' + id)
+  }
 }

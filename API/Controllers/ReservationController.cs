@@ -1,4 +1,5 @@
 ﻿using API.Commands.CreateReservation;
+using API.Commands.DeleteReservation;
 using API.Commands.SendReservationConfirmation;
 using API.Commands.SendTickets;
 using Core.Entities;
@@ -54,11 +55,11 @@ public class ReservationController(IReservationRepository reservationRepository,
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteReservation(int reservationId)
     {
-        var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
-        if (reservation == null) return NotFound();
+        var command = new DeleteReservationCommand(reservationId);
 
-        _reservationRepository.DeleteReservation(reservation);
-        if (await _reservationRepository.SaveChangesAsync())
+        var result = await _mediator.Send(command);
+
+        if (result)
             return NoContent();
 
         return BadRequest("Problem deleting reservation");

@@ -72,12 +72,22 @@
         </td>
     </ng-container>
 
-    <!-- isPaid Column -->
+    <!-- emailSent Column -->
     <ng-container matColumnDef="emailSent">
         <th mat-header-cell *matHeaderCellDef> Tickets verzonden </th>
         <td mat-cell *matCellDef="let element">
             <mat-checkbox [checked]="element.emailSent" disabled>
             </mat-checkbox>
+        </td>
+    </ng-container>
+
+    <!-- delete Column -->
+    <ng-container matColumnDef="Delete">
+        <th mat-header-cell *matHeaderCellDef> Verwijderen </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-button>
+                <mat-icon color="warn" (click)="deleteReservation(element.id)">delete</mat-icon>
+            </button>
         </td>
     </ng-container>
 
