@@ -431,5 +431,9 @@
   { "Row": "U", "Number": 17 },
   { "Row": "U", "Number": 18 },
   { "Row": "U", "Number": 19 },
-  { "Row": "U", "Number": 20 }
+  { "Row": "U", "Number": 20 },
+
+  { "Row": "V", "Number": 1, "IsWheelchair": true },
+  { "Row": "V", "Number": 2, "IsWheelchair": true },
+  { "Row": "V", "Number": 3, "IsWheelchair": true }
 ]

@@ -1,6 +1,4 @@
-﻿using Core.Entities;
-
-namespace API.Dtos;
+﻿namespace API.Dtos;
 
 public class ShowSeatDto
 {

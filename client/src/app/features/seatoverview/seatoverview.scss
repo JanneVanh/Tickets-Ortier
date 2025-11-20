@@ -280,6 +280,69 @@
   }
 }
 
+.seat-wheelchair {
+  background-color: #4caf50;
+  color: white;
+  border-color: #45a049;
+  font-size: 12px !important;
+
+  @media (min-width: 481px) {
+    font-size: 14px !important;
+  }
+
+  @media (min-width: 769px) {
+    font-size: 16px !important;
+  }
+
+  &:hover {
+    background-color: #45a049;
+    border-color: #3d8b40;
+  }
+
+  .wheelchair-icon {
+    font-size: inherit;
+  }
+}
+
+.seat-wheelchair-selected {
+  background-color: #2196f3;
+  color: white;
+  border-color: #0b7dda;
+  font-size: 12px !important;
+
+  @media (min-width: 481px) {
+    font-size: 14px !important;
+  }
+
+  @media (min-width: 769px) {
+    font-size: 16px !important;
+  }
+
+  &:hover {
+    background-color: #0b7dda;
+    border-color: #0a6bc2;
+  }
+
+  .wheelchair-icon {
+    font-size: inherit;
+  }
+}
+
+.wheelchair-row {
+  margin-top: 20px;
+  position: relative;
+}
+
+.wheelchair-seats {
+  justify-content: flex-start;
+  gap: 8px;
+
+  @media (min-width: 769px) {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+}
+
 .legend {
   display: flex;
   flex-direction: row;
@@ -322,6 +385,17 @@
   height: 20px;
   border-radius: 4px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+
+  &.seat-wheelchair {
+    background-color: #9c27b0;
+    border: 2px solid #7b1fa2;
+  }
 }
 
 .seat-summary {

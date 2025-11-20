@@ -4,5 +4,6 @@ public enum SeatStatus
 {
     Available = 0,
     Reserved = 1,
-    Selected = 2
+    Selected = 2,
+    WheelchairAvailable = 3
 }

@@ -83,10 +83,15 @@ export class Seatoverview implements OnInit {
       return;
     }
 
-    for (const row of this.seats) {
+    // Filter out wheelchair rows for autoselect
+    const regularSeats = this.seats.filter(row =>
+      row.length > 0 && !row[0].isWheelchair
+    );
+
+    for (const row of regularSeats) {
       for (let i = 0; i <= row.length - this.selectedSeatsCount; i++) {
         const block = row.slice(i, i + this.selectedSeatsCount)
-        if (block.every(seat => seat.status === SeatStatus.Available)) {
+        if (block.every(seat => seat.status === SeatStatus.Available && !seat.isWheelchair)) {
           if (this.wouldCreateSingleGap(row, i, this.selectedSeatsCount)) continue;
           this.holdRequests(block);
           return;
@@ -97,9 +102,9 @@ export class Seatoverview implements OnInit {
     this.noBlockLeft = true
     const availableSeats: Seat[] = [];
 
-    for (const row of this.seats) {
+    for (const row of regularSeats) {
       for (const seat of row) {
-        if (seat.status === SeatStatus.Available) {
+        if (seat.status === SeatStatus.Available && !seat.isWheelchair) {
           availableSeats.push(seat);
           if (availableSeats.length === this.selectedSeatsCount) {
             break;
@@ -243,6 +248,8 @@ export class Seatoverview implements OnInit {
         return 'Reserved';
       case SeatStatus.Selected:
         return 'Selected';
+      case SeatStatus.WheelchairAvailable:
+        return 'Wheelchair Available';
       default:
         return 'Unknown';
     }
@@ -264,13 +271,35 @@ export class Seatoverview implements OnInit {
     return this.getSelectedSeats().length;
   }
 
+  isWheelchairSeat(seat: Seat): boolean {
+    return seat.isWheelchair;
+  }
+
   cancel(): void {
     const seats = this.getSelectedSeats()
 
-    seats.forEach(seat => {
-      this.seatService.unholdSeat(seat)
-      this.reservationService.emptyReservation()
-      this.router.navigateByUrl('/')
-    })
+    const unholdRequests = seats.map(seat => {
+      const body = {
+        showId: this.showId,
+        seatId: seat.id,
+      };
+      return this.seatService.unholdSeat(body);
+    });
+
+    forkJoin(unholdRequests).subscribe({
+      next: (responses) => {
+        responses.forEach((response, idx) => {
+          seats[idx].status = response;
+        });
+        this.reservationService.emptyReservation();
+        this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        console.error('Error unholding seats:', err);
+        // Still navigate away even if unhold fails
+        this.reservationService.emptyReservation();
+        this.router.navigateByUrl('/');
+      }
+    });
   }
 }

@@ -26,6 +26,7 @@ public class SeatsForShowQueryHandler(
             Id = s.Id,
             Row = s.Row,
             Number = s.Number,
+            IsWheelchair = s.IsWheelchair,
             Status = reservedSeats.Select(rs => rs.Name).Contains(s.Name) ? SeatStatus.Reserved : 
                 (holdedSeats.Select(hs => hs.Name).Contains(s.Name) ? SeatStatus.Reserved : SeatStatus.Available),
         }).ToList();
