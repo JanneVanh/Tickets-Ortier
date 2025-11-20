@@ -14,5 +14,6 @@ public class Reservation : BaseEntity
     public string? PaymentRemark { get; set; }
     public required int ShowId { get; set; }
     public string? PaymentCode => $"Ortier-{Id:D3}";
+    public bool EmailSent { get; set; } = false;
 }
 

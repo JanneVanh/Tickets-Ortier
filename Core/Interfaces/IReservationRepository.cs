@@ -11,4 +11,5 @@ public interface IReservationRepository
     void DeleteReservation(Reservation reservation);
     Task AssignSeatsAsync(IEnumerable<int> seatIds, Reservation reservation);
     Task<bool> SaveChangesAsync();
+    Task<IEnumerable<Reservation>> GetReservationsToSendTickets();
 }

@@ -14,12 +14,18 @@ public class EmailService : IEmailService
     public EmailService(IConfiguration configuration)
     {
         _configuration = configuration;
-        _fromEmail = _configuration["Email:fromEmail"] ?? throw new ArgumentException(nameof(_fromEmail)) ;
+        _fromEmail = _configuration["Email:fromEmail"] ?? throw new ArgumentException(nameof(_fromEmail));
         _password = _configuration["Email:password"] ?? throw new ArgumentNullException(nameof(_password));
     }
 
     public async Task SendEmail(string subject, string body, string toEmail)
     {
+        await SendEmailWithAttachments(subject, body, toEmail, null);
+    }
+
+    public async Task SendEmailWithAttachments(string subject, string body, string toEmail, List<(byte[] content, string fileName)>? attachments = null)
+    {
+
         using var client = new SmtpClient("smtp.gmail.com", 587)
         {
             Credentials = new NetworkCredential(_fromEmail, _password),
@@ -30,6 +36,16 @@ public class EmailService : IEmailService
         {
             IsBodyHtml = true
         };
+
+        // Add PDF attachments
+        if (attachments != null)
+        {
+            foreach (var (content, fileName) in attachments)
+            {
+                var attachment = new Attachment(new MemoryStream(content), fileName, "application/pdf");
+                mailMessage.Attachments.Add(attachment);
+            }
+        }
 
         await client.SendMailAsync(mailMessage);
     }

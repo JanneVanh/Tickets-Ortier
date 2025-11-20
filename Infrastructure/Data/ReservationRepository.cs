@@ -20,7 +20,7 @@ public class ReservationRepository(TicketContext ticketContext) : IReservationRe
 
             var reservationSeat = new ReservationSeat()
             {
-                Seat = seat,
+                Seat = seat!,
                 SeatId = seatId,
                 ReservationId = reservation.Id,
                 Reservation = reservation,
@@ -63,6 +63,14 @@ public class ReservationRepository(TicketContext ticketContext) : IReservationRe
     public async Task<bool> SaveChangesAsync()
     {
         return await _ticketContext.SaveChangesAsync() > 0;
+    }
+
+    public async Task<IEnumerable<Reservation>> GetReservationsToSendTickets()
+    {
+        return await _ticketContext.Reservations
+            .Where(r => r.IsPaid)
+            .Where(r => !r.EmailSent)
+            .ToListAsync();
     }
 }
 

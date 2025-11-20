@@ -1,5 +1,6 @@
 ﻿using API.Commands.CreateReservation;
 using API.Commands.SendReservationConfirmation;
+using API.Commands.SendTickets;
 using Core.Entities;
 using Core.Interfaces;
 using MediatR;
@@ -61,5 +62,14 @@ public class ReservationController(IReservationRepository reservationRepository,
             return NoContent();
 
         return BadRequest("Problem deleting reservation");
+    }
+
+    [HttpPost("sendTickets")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult> SendTickets()
+    {
+        var command = new SendTicketsCommand();
+        await _mediator.Send(command);
+        return NoContent();
     }
 }
