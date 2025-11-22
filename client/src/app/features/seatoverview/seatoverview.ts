@@ -66,6 +66,9 @@ export class Seatoverview implements OnInit {
         this.seats = sortedRows.map(key =>
           grouped[key].sort((a, b) => a.number - b.number)
         );
+        if (this.singleGapExists()) {
+          this.noBlockLeft = true;
+        }
         this.autoSelectSeats()
       },
       error: (error) => {
@@ -168,7 +171,10 @@ export class Seatoverview implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.noBlockLeft && this.singleGapExists()) return;
+    if (!this.noBlockLeft && this.singleGapExists()) {
+      this.snack.error('Reservering niet mogelijk: één lege stoel tussen geselecteerde stoelen.');
+      return;
+    }
 
     const reservationData = {
       reservation: this.reservationService.reservation(),
@@ -202,7 +208,6 @@ export class Seatoverview implements OnInit {
           (!left || left?.status === SeatStatus.Selected || left?.status === SeatStatus.Reserved) &&
           (!right || right?.status === SeatStatus.Selected || right?.status === SeatStatus.Reserved)
         ) {
-          this.snack.error('Reservering niet mogelijk: één lege stoel tussen geselecteerde stoelen.');
           return true;
         }
       }

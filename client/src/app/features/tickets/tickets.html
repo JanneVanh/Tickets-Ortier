@@ -9,10 +9,10 @@
                     <app-text-input label="Emailadres" formControlName="email" />
                     <p class="text-xl title">Tickets</p>
                     <div class="ticket-inputs">
-                        <app-text-input formControlName="numberOfAdults" label="Number of Adults" type="number">
+                        <app-text-input formControlName="numberOfAdults" label="Aantal volwassenen" type="number">
                         </app-text-input>
 
-                        <app-text-input formControlName="numberOfChildren" label="Number of Children" type="number">
+                        <app-text-input formControlName="numberOfChildren" label="Aantal kinderen (-12 jaar)" type="number">
                         </app-text-input>
 
                         <!-- Error message display -->
@@ -35,7 +35,7 @@
                     }
 
                     <button mat-flat-button [disabled]="!isFormValid" type="submit" class="w-full py-2 my-4 next"
-                        (click)="onNext()">Volgende</button>
+                        (click)="onNext()">Stoelen kiezen</button>
                 </form>
             </div>
         </div>
