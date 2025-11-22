@@ -25,11 +25,20 @@
   }
 }
 
+.total {
+  color: $secondaryBackground-color;
+}
+
+.mat-mdc-form-field {
+  align-items: center;
+}
+
 .mat-mdc-paginator {
   margin-top: 1rem;
   background: transparent;
 
   @media (max-width: 768px) {
+
     // Make paginator more compact on mobile
     .mat-mdc-paginator-container {
       padding: 0 8px;
@@ -47,10 +56,10 @@
 
 .filter-reservations {
   display: flex;
-  flex-direction: column;
-  width: 30%;
-  margin-top: 150px;
-  margin-bottom: 50px;
+  justify-content: start;
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -60,6 +69,36 @@
       width: 100%;
     }
   }
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: $secondaryBackground-color;
+  margin: 30px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  justify-self: center;
+}
+
+.info-card {
+    background-color: $tertiaryBackground-color;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 8px $tertiaryBackground-color;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 50%;
+    justify-self: center;
+    margin-bottom: 50px;
+}
+
+.filter-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
 // Mobile responsive layout for reservations page

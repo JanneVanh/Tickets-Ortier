@@ -1,18 +1,18 @@
-import { Component, inject, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { ReservationService } from '../../core/services/reservation';
-import { Reservation } from '../../shared/Models/Reservation';
-import { Snackbar } from '../../core/services/snackbar';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButton } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ReservationService } from '../../core/services/reservation';
+import { Snackbar } from '../../core/services/snackbar';
+import { Reservation } from '../../shared/Models/Reservation';
+import { Show } from '../../shared/Models/Show';
 
 
 @Component({
@@ -46,9 +46,13 @@ export class Reservations implements OnInit, AfterViewInit {
   showOnlyUnpaid: boolean = false;
   originalData: Reservation[] = [];
   sendingTickets: boolean = false;
+  shows: Show[] = []
+
+  sumTotalSaturday: number = 0;
+  sumTotalSunday: number = 0;
+  total: number = 0;
 
   private _reservations: Reservation[] = [];
-  private router = inject(Router);
 
   get reservations(): Reservation[] {
     return this._reservations;
@@ -66,6 +70,14 @@ export class Reservations implements OnInit, AfterViewInit {
     }
   }
 
+  calculateShowTotals(): void {
+    const saturdayReservations = this.reservations.filter(r => r.showId === 1);
+    const sundayReservations = this.reservations.filter(r => r.showId === 2);
+    this.sumTotalSaturday = saturdayReservations.reduce((sum, r) => sum + (r.numberOfAdults ?? 0) + (r.numberOfChildren ?? 0), 0);
+    this.sumTotalSunday = sundayReservations.reduce((sum, r) => sum + (r.numberOfAdults ?? 0) + (r.numberOfChildren ?? 0), 0);
+    this.total = this.sumTotalSaturday + this.sumTotalSunday;
+  }
+
   ngOnInit(): void {
     this.reservationService.emptyReservation();
     this.getReservations();
@@ -76,6 +88,7 @@ export class Reservations implements OnInit, AfterViewInit {
       next: response => {
         console.log('Reservations received:', response);
         this.reservations = response;
+        this.calculateShowTotals();
       },
       error: error => {
         console.error('Error fetching reservations:', error);
@@ -109,6 +122,11 @@ export class Reservations implements OnInit, AfterViewInit {
           const updatedData = [...this.dataSource.data];
           updatedData[index] = updatedReservation;
           this.dataSource.data = updatedData;
+        }
+        // Update the reservation in the main array and recalculate totals
+        const mainIndex = this._reservations.findIndex(r => r.id === updatedReservation.id);
+        if (mainIndex !== -1) {
+          this._reservations[mainIndex] = updatedReservation;
         }
       },
       error: (error) => {
