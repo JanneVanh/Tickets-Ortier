@@ -27,7 +27,7 @@
 
       <div class="seat-summary">
         <h3>Samenvatting</h3>
-        <p>Je hebt <strong>{{ getSelectedSeatsCount() }}</strong> stoel(en) gereserveerd</p>
+        <p>Je krijgt <strong>{{ getSelectedSeatsCount() }}</strong> stoel(en) toegewezen</p>
         <p>voor de show op {{showDay}}</p>
         <div class="selected-seats-list">
           @for (seat of getSelectedSeats(); track trackBySeat($index, seat)) {
@@ -36,6 +36,7 @@
           </span>
           }
         </div>
+        <p>wijzigen kan door op de geselecteerde stoelen te klikken.</p>
         <button mat-raised-button (click)="onSubmit()" class="navigation-button"
           [disabled]="getSelectedSeatsCount() !== reservationService.totalSeats()">Reserveer</button>
       </div>

@@ -30,7 +30,7 @@ export class Wiezijnwij implements OnInit {
 
   choirInfo = {
     description: `
-    Simpelweg voor 't plezier van het zingen komen we iedere maandagavond samen om ... te zingen. </br>
-    Al 20 jaar lang. </br>`
+
+    Simpelweg voor 't plezier van het zingen komen we al meer dan 20 jaar lang elke maandagavond samen om ... te zingen. </br>`
   };
 }

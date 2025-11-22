@@ -207,7 +207,7 @@ export class Seatoverview implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (!this.noBlockLeft && this.singleGapExists()) {
-      this.snack.error('Reservering niet mogelijk: één lege stoel tussen geselecteerde stoelen.');
+      this.snack.error('Reserveren is niet mogelijk als je een lege stoel overlaat.');
       return;
     }
 
