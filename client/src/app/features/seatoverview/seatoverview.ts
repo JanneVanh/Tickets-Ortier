@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { SeatStatus } from '../../shared/Models/SeatStatus';
   templateUrl: './seatoverview.html',
   styleUrl: './seatoverview.scss'
 })
-export class Seatoverview implements OnInit {
+export class Seatoverview implements OnInit, OnDestroy {
   private activatedRoute = inject(ActivatedRoute)
   seats: Seat[][] = [];
   showId: number = 0;
@@ -30,10 +30,45 @@ export class Seatoverview implements OnInit {
   private snack = inject(Snackbar)
   private router = inject(Router)
   noBlockLeft: boolean = false;
+  private isSubmitting: boolean = false;
 
   ngOnInit(): void {
     this.getShowInfo();
     this.loadSeatsForShow(this.showId);
+  }
+
+  ngOnDestroy(): void {
+    // Only cleanup if not submitting (i.e., user is navigating away without reserving)
+    if (!this.isSubmitting) {
+      this.cleanupSelectedSeats();
+    }
+  }
+
+  private cleanupSelectedSeats(): void {
+    const seats = this.getSelectedSeats();
+    
+    if (seats.length === 0) {
+      return;
+    }
+
+    const unholdRequests = seats.map(seat => {
+      const body = {
+        showId: this.showId,
+        seatId: seat.id,
+      };
+      return this.seatService.unholdSeat(body);
+    });
+
+    forkJoin(unholdRequests).subscribe({
+      next: () => {
+        this.reservationService.emptyReservation();
+      },
+      error: (err) => {
+        console.error('Error unholding seats:', err);
+        // Still empty reservation even if unhold fails
+        this.reservationService.emptyReservation();
+      }
+    });
   }
 
   getShowInfo(): void {
@@ -183,6 +218,7 @@ export class Seatoverview implements OnInit {
 
     this.reservationService.createReservation(reservationData).subscribe({
       next: (data: any) => {
+        this.isSubmitting = true;
         this.reservationService.reservation.set(data);
         this.snack.success('Je tickets zijn gereserveerd.');
         this.router.navigateByUrl('/confirmation');
@@ -281,30 +317,7 @@ export class Seatoverview implements OnInit {
   }
 
   cancel(): void {
-    const seats = this.getSelectedSeats()
-
-    const unholdRequests = seats.map(seat => {
-      const body = {
-        showId: this.showId,
-        seatId: seat.id,
-      };
-      return this.seatService.unholdSeat(body);
-    });
-
-    forkJoin(unholdRequests).subscribe({
-      next: (responses) => {
-        responses.forEach((response, idx) => {
-          seats[idx].status = response;
-        });
-        this.reservationService.emptyReservation();
-        this.router.navigateByUrl('/');
-      },
-      error: (err) => {
-        console.error('Error unholding seats:', err);
-        // Still navigate away even if unhold fails
-        this.reservationService.emptyReservation();
-        this.router.navigateByUrl('/');
-      }
-    });
+    this.cleanupSelectedSeats();
+    this.router.navigateByUrl('/');
   }
 }

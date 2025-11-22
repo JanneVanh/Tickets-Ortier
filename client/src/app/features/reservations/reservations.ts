@@ -67,6 +67,7 @@ export class Reservations implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.reservationService.emptyReservation();
     this.getReservations();
   }
 

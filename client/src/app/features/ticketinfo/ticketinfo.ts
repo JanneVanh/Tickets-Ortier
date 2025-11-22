@@ -5,6 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { Show } from '../../shared/Models/Show';
 import { ShowService } from '../../core/services/showService';
+import { ReservationService } from '../../core/services/reservation';
 
 @Component({
   selector: 'app-ticketinfo',
@@ -20,6 +21,7 @@ import { ShowService } from '../../core/services/showService';
 export class Ticketinfo implements OnInit {
   shows: Show[] = []
   private showService = inject(ShowService)
+  private reservationService = inject(ReservationService)
 
   showDates = [
     { day: 'Zaterdag', date: '14 maart 2026', time: '19h30' },
@@ -44,6 +46,7 @@ export class Ticketinfo implements OnInit {
   };
 
   ngOnInit(): void {
+    this.reservationService.emptyReservation();
     this.showService.getShowsWithTickets().subscribe({
       next: response => this.shows = response
     })

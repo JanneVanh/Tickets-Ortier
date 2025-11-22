@@ -10,6 +10,7 @@ export class ReservationService {
   baseUrl = environment.apiUrl;
   private http = inject(HttpClient)
   reservation = signal<Reservation | null>(null);
+
   priceForAdults = computed(() => {
     const reservation = this.reservation();
     if (!reservation || reservation.numberOfAdults == null) return null;
@@ -31,7 +32,7 @@ export class ReservationService {
   totalSeats = computed(() => {
     const reservation = this.reservation();
 
-    if (!reservation || ( reservation?.numberOfAdults === null && reservation.numberOfChildren === null)) return null
+    if (!reservation || (reservation?.numberOfAdults === null && reservation.numberOfChildren === null)) return null
 
     return (reservation?.numberOfAdults ?? 0) + (reservation?.numberOfChildren ?? 0)
   })

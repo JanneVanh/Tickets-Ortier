@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { ReservationService } from '../../core/services/reservation';
 
 @Component({
   selector: 'app-wiezijnwij',
@@ -9,7 +10,13 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './wiezijnwij.html',
   styleUrl: './wiezijnwij.scss'
 })
-export class Wiezijnwij {
+export class Wiezijnwij implements OnInit{
+  private reservationService = inject(ReservationService)
+
+  ngOnInit(): void {
+    this.reservationService.emptyReservation();
+  }
+  
   sopranen = {
     description: `Lore, Sofie, Katrien, Nancy, Anniek, Lynn, Marijke, Karlien, Zyncke, Tine, Sharon, Ann, Lieve`
   };  
