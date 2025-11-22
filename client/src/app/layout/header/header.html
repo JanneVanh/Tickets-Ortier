@@ -1,7 +1,12 @@
 <header class="border-b shadow-md p-3 w-full max-h-20 fixed top-0 z-50">
-    <div class="flex align-middle items-center gap-10 justify-center max-w-screen-2xl mx-auto">
-        <img routerLink="/" src="/images/Logo ortier.jpg" alt="app logo" class="max-h-16">
-        <nav class="flex gap-3 my-2 text-2xl">
+    <div class="header-container">
+        <img routerLink="/" src="/images/Logo ortier.jpg" alt="app logo" class="max-h-16" (click)="closeMobileMenu()">
+        
+        <!-- Mobile Page Title -->
+        <h1 class="mobile-title">{{pageTitle}}</h1>
+        
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav gap-3 my-2 text-2xl">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
             <a routerLink="/wiezijnwij" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Wie zijn wij?</a>
             <a routerLink="/ticketinfo" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tickets</a>
@@ -9,13 +14,38 @@
                 <a routerLink="/reservations" routerLinkActive="active">Reservations</a>
             }
         </nav>
+        
+        <!-- Desktop User Menu Button -->
         @if (accountService.currentUser()) {
-        <button mat-button [mat-menu-trigger-for]="menu">
+        <button mat-button [mat-menu-trigger-for]="menu" class="desktop-user-menu">
             <mat-icon>arrow_drop_down</mat-icon>
             <span>{{accountService.currentUser()?.email}}</span>
         </button>
         }
+        
+        <!-- Hamburger Menu Button (Mobile Only) -->
+        <button class="hamburger-menu" (click)="toggleMobileMenu()" [class.open]="mobileMenuOpen">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
+    
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav" [class.mobile-open]="mobileMenuOpen">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a>
+        <a routerLink="/wiezijnwij" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Wie zijn wij?</a>
+        <a routerLink="/ticketinfo" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Tickets</a>
+        @if (canAccessReservations) {
+            <a routerLink="/reservations" routerLinkActive="active" (click)="closeMobileMenu()">Reservations</a>
+        }
+        @if (accountService.currentUser()) {
+            <a class="user-menu-mobile" [mat-menu-trigger-for]="menu" (click)="closeMobileMenu()">
+                <mat-icon>account_circle</mat-icon>
+                <span>{{accountService.currentUser()?.email}}</span>
+            </a>
+        }
+    </nav>
 </header>
 
 <!-- @if (busyService.loading){
