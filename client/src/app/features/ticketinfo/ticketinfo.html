@@ -1,5 +1,21 @@
 @if (shows) {
 <div class="ticket-info-container">
+    <div>
+        <div class="ticket-header">
+            <mat-icon class="card-icon star-icon">local_activity</mat-icon>
+            <h3>Koop hier je tickets:</h3>
+        </div>
+        <div class="navigation-buttons">
+
+            @for (show of shows; track $index) {
+            <button mat-raised-button [routerLink]="'/tickets/' + show.id" routerLinkActive="active">
+                <mat-icon>local_activity</mat-icon>
+                <span>{{ show.day }}</span>
+            </button>
+            }
+        </div>
+    </div>
+
     <div class="info-grid">
         <div class="info-card">
             <div class="card-header">
@@ -55,22 +71,6 @@
         </div>
         <div class="card-content">
             <p class="vip-description" [innerHTML]="vipInfo.description"></p>
-        </div>
-    </div>
-
-    <div>
-        <div class="ticket-header">
-            <mat-icon class="card-icon star-icon">local_activity</mat-icon>
-            <h3>Koop hier je tickets:</h3>
-        </div>
-        <div class="navigation-buttons">
-
-            @for (show of shows; track $index) {
-            <button mat-raised-button [routerLink]="'/tickets/' + show.id" routerLinkActive="active">
-                <mat-icon>local_activity</mat-icon>
-                <span>{{ show.day }}</span>
-            </button>
-            }
         </div>
     </div>
 </div>

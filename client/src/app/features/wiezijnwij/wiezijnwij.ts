@@ -19,13 +19,13 @@ export class Wiezijnwij implements OnInit {
     description: `Lore, Sofie, Katrien, Nancy, Anniek, Lynn, Marijke, Karlien, Zyncke, Tine, Sharon, Ann, Lieve`
   };
   alten = {
-    description: `Alten in volgorde van foto`
+    description: `Miet, Julie, Ann, Nathalie, Joelle, Nele, Tilly, Nele, Katrien, Mieke, Caroline, Kathleen, Carline, Janne`
   };
   tenoren = {
     description: `Frederik, Matty, Philippe, Cris, Henk, Pieter, Bart`
   };
   bassen = {
-    description: `Bassen in volgorde van foto`
+    description: `Frederiek, Peter, Koen, Wim, Pascal, Carl, Stefaan`
   };
 
   choirInfo = {

@@ -21,8 +21,8 @@ body {
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables
-  background-color: #0a189b; // Light gray background - change this to your desired color
-  color: #ffffff; // Dark text - change this to your desired text color 
+  background-color: $primaryBackground-color; // Light gray background - change this to your desired color
+  color: $text-color; // Dark text - change this to your desired text color 
   font: var(--mat-sys-body-medium);
 
   // Reset the user agent margin.
@@ -30,7 +30,7 @@ body {
 }
 
 .text-primary {
-  color: #e8b154
+  color: $secondaryBackground-color;
 }
 
 .container {

@@ -22,25 +22,10 @@
     }
 }
 
-.title {
-    font-weight: 600;
-    font-size: xxx-large;
-    text-align: center;
-    
-    @media (max-width: 768px) {
-        font-size: xx-large;
-    }
-    
-    @media (max-width: 480px) {
-        font-size: x-large;
-        line-height: 1.2;
-    }
-    
-    @media (max-width: 320px) {
-        font-size: large;
-    }
-}
-
-.save-the-date {
+.affiche {
     height: 400px;
+
+    @media (max-width: 650px) {
+        height:fit-content;
+    }
 }
