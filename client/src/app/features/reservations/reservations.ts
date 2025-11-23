@@ -40,7 +40,7 @@ export class Reservations implements OnInit, AfterViewInit {
   snackbar = inject(Snackbar);
   cdr = inject(ChangeDetectorRef);
   dataSource = new MatTableDataSource<Reservation>([]);
-  columnsToDisplay = ['ID', 'Email', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid', 'emailSent', 'Delete'];
+  columnsToDisplay = ['ID', 'Email', 'Surname', 'Name', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid', 'emailSent', 'Delete', 'Remark'];
   searchCode: string = ''
   filteredData: Reservation[] = [];
   showOnlyUnpaid: boolean = false;
@@ -195,6 +195,33 @@ export class Reservations implements OnInit, AfterViewInit {
       error: (error) => {
         console.error('Error deleting reservation:', error);
         this.snackbar.error('Fout bij het verwijderen van de reservering.');
+      }
+    });
+  }
+
+  updateReservationRemark(reservation: Reservation, newRemark: string): void {
+    const originalRemark = reservation.remark;
+    reservation.remark = newRemark;
+
+    this.reservationService.updateReservation(reservation).subscribe({
+      next: (updatedReservation) => {
+        const index = this.dataSource.data.findIndex((r: Reservation) => r.id === updatedReservation.id);
+        if (index !== -1) {
+          const updatedData = [...this.dataSource.data];
+          updatedData[index] = updatedReservation;
+          this.dataSource.data = updatedData;
+        }
+        // Update the reservation in the main array
+        const mainIndex = this._reservations.findIndex(r => r.id === updatedReservation.id);
+        if (mainIndex !== -1) {
+          this._reservations[mainIndex] = updatedReservation;
+        }
+        this.snackbar.success('Opmerking bijgewerkt');
+      },
+      error: (error) => {
+        reservation.remark = originalRemark;
+        console.error('Error updating remark:', error);
+        this.snackbar.error('Fout bij het bijwerken van opmerking');
       }
     });
   }

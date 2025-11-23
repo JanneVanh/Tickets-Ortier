@@ -66,6 +66,18 @@
             <td mat-cell *matCellDef="let element"> {{element.email}} </td>
         </ng-container>
 
+        <!-- Surname Column -->
+        <ng-container matColumnDef="Surname">
+            <th mat-header-cell *matHeaderCellDef> Voornaam </th>
+            <td mat-cell *matCellDef="let element"> {{element.surName}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef> Naam </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
         <!-- Show Column -->
         <ng-container matColumnDef="Show">
             <th mat-header-cell *matHeaderCellDef> Show </th>
@@ -74,13 +86,13 @@
 
         <!-- Volwassenen Column -->
         <ng-container matColumnDef="Volwassenen">
-            <th mat-header-cell *matHeaderCellDef> Volwassenen </th>
+            <th mat-header-cell *matHeaderCellDef> Volw. </th>
             <td mat-cell *matCellDef="let element"> {{element.numberOfAdults}} </td>
         </ng-container>
 
         <!-- Kinderen Column -->
         <ng-container matColumnDef="Kinderen">
-            <th mat-header-cell *matHeaderCellDef> Kinderen </th>
+            <th mat-header-cell *matHeaderCellDef> Kind </th>
             <td mat-cell *matCellDef="let element"> {{element.numberOfChildren}} </td>
         </ng-container>
 
@@ -117,11 +129,24 @@
 
         <!-- delete Column -->
         <ng-container matColumnDef="Delete">
-            <th mat-header-cell *matHeaderCellDef> Verwijderen </th>
+            <th mat-header-cell *matHeaderCellDef>  </th>
             <td mat-cell *matCellDef="let element">
                 <button mat-button>
-                    <mat-icon color="warn" (click)="deleteReservation(element.id)">delete</mat-icon>
+                    <mat-icon class="delete" (click)="deleteReservation(element.id)">delete</mat-icon>
                 </button>
+            </td>
+        </ng-container>
+
+        <!-- Opmerking Column -->
+        <ng-container matColumnDef="Remark">
+            <th mat-header-cell *matHeaderCellDef> Opmerking </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field class="remark-field">
+                    <input matInput 
+                           [value]="element.remark || ''" 
+                           (blur)="updateReservationRemark(element, $event.target.value)"
+                           placeholder="Voeg opmerking toe...">
+                </mat-form-field>
             </td>
         </ng-container>
 

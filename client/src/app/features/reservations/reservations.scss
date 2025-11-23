@@ -25,6 +25,10 @@
   }
 }
 
+.delete {
+  color: $text-color;
+}
+
 .total {
   color: $secondaryBackground-color;
 }
@@ -130,5 +134,26 @@
   button {
     background-color: $secondaryBackground-color;
     color: $text-color;
+  }
+}
+
+.remark-field {
+  width: 100%;
+  
+  .mdc-text-field {
+    height: 40px;
+  }
+  
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+  
+  .mat-mdc-text-field-wrapper {
+    padding: 0;
+  }
+
+  input {
+    font-size: 14px;
+    padding: 8px 12px;
   }
 }
