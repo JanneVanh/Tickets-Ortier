@@ -197,6 +197,10 @@ export class Seatoverview implements OnInit, OnDestroy {
     if (seat.status === SeatStatus.Available && !onlyUnselect) {
       this.seatService.holdSeat(body).subscribe(response => {
         seat.status = response
+        if (seat.status === SeatStatus.Reserved) {
+          this.loadSeatsForShow(this.showId);
+          this.snack.error('Deze stoel werd net door iemand anders gereserveerd.')
+        }
       });
     } else if (seat.status === SeatStatus.Selected) {
       this.seatService.unholdSeat(body).subscribe(response => {

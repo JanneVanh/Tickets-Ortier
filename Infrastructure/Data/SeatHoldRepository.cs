@@ -20,7 +20,8 @@ public class SeatHoldRepository(TicketContext ticketContext) : ISeatHoldReposito
 
     public async Task<SeatStatus> HoldSeatAsync(int seatId, int showId)
     {
-        var seatNotAvailable = ticketContext.SeatHolds.Any(s => s.ShowId == showId && s.SeatId == seatId);
+        var seatNotAvailable = ticketContext.SeatHolds.Any(s => s.ShowId == showId && s.SeatId == seatId)
+            || ticketContext.ReservationSeats.Any(rs => rs.ShowId == showId && rs.SeatId == seatId);
         if (seatNotAvailable)
             return SeatStatus.Reserved;
 
@@ -47,6 +48,10 @@ public class SeatHoldRepository(TicketContext ticketContext) : ISeatHoldReposito
 
         ticketContext.SeatHolds.Remove(seatHold);
         await ticketContext.SaveChangesAsync();
+
+        var reservedSeat = ticketContext.ReservationSeats.Any(rs => rs.ShowId == showId && rs.SeatId == seatId);
+        if (reservedSeat)
+            return SeatStatus.Reserved;
 
         return SeatStatus.Available;
     }
