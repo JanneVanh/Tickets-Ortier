@@ -19,7 +19,7 @@ export class Wiezijnwij implements OnInit {
     description: `Lore, Sofie, Katrien, Nancy, Anniek, Lynn, Marijke, Karlien, Zyncke, Tine, Sharon, Ann, Lieve`
   };
   alten = {
-    description: `Miet, Julie, Ann, Nathalie, Joelle, Nele, Tilly, Nele, Katrien, Mieke, Caroline, Kathleen, Carline, Janne`
+    description: `Miet, Julie, Ann, Nathalie, Joelle, Nele, Tilly, Nele, Katrien, Kris, Ann, Mieke, Caroline, Kathleen, Carline, Janne`
   };
   tenoren = {
     description: `Frederik, Matty, Philippe, Cris, Henk, Pieter, Bart`
