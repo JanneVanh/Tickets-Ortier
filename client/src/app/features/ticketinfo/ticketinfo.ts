@@ -42,7 +42,8 @@ export class Ticketinfo implements OnInit {
   vipInfo = {
     description: `Een deel van de opbrengst van het concert gaat naar Tejo.be </br></br>
   TEJO staat voor "Therapeuten voor Jongeren". Dit is een initiatief dat zich inzet voor het mentaal welzijn van jongeren van 10 tot 20 jaar. 
-  Ze bieden gratis en anoniem een aantal gesprekken aan bij een professionele therapeut die werkt op vrijwillige basis . `
+  Ze bieden gratis en anoniem een aantal gesprekken aan bij een professionele therapeut die werkt op vrijwillige basis. </br>
+  Meer informatie op hun <u><a href="https://www.tejo.be/">website</a></u>.`
   };
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { ReservationService } from '../../core/services/reservation';
 import { SeatService } from '../../core/services/seat';
@@ -28,9 +28,16 @@ export class Seatoverview implements OnInit, OnDestroy {
   readonly SeatStatus = SeatStatus;
   reservationService = inject(ReservationService)
   private snack = inject(Snackbar)
-  private router = inject(Router)
   noBlockLeft: boolean = false;
   private isSubmitting: boolean = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart && event.navigationTrigger === 'popstate') {
+        this.router.navigateByUrl('/ticketinfo', { replaceUrl: true });
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.getShowInfo();
@@ -46,7 +53,7 @@ export class Seatoverview implements OnInit, OnDestroy {
 
   private cleanupSelectedSeats(): void {
     const seats = this.getSelectedSeats();
-    
+
     if (seats.length === 0) {
       return;
     }

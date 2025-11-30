@@ -30,6 +30,13 @@ export class Tickets implements OnInit {
   private showService = inject(ShowService)
   maxTickets: number = 10;
 
+  constructor() {
+    window.addEventListener('popstate', () => {
+      this.reservationService.emptyReservation();
+      this.router.navigate(['/ticketinfo']);
+    });
+  }
+
   // Custom validator for maximum tickets
   private maxTicketsValidator = (control: AbstractControl): ValidationErrors | null => {
     const numberOfAdults = parseInt(control.get('numberOfAdults')?.value) || 0;
