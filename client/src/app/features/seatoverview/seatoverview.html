@@ -38,7 +38,9 @@
         </div>
         <p>wijzigen kan door op de geselecteerde stoelen te klikken.</p>
         <button mat-raised-button (click)="onSubmit()" class="navigation-button"
-          [disabled]="getSelectedSeatsCount() !== reservationService.totalSeats()">Reserveer</button>
+          [disabled]="getSelectedSeatsCount() !== reservationService.totalSeats()">
+          {{ getSelectedSeatsCount() !== reservationService.totalSeats() ? `Kies ${reservationService.totalSeats()} stoelen` : "Reserveer" }}
+        </button>
       </div>
 
       <div class="cancel">

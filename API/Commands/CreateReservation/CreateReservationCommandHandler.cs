@@ -41,9 +41,9 @@ public class CreateReservationCommandHandler(
                     <p>Beste {reservation.SurName} {reservation.Name},</p>
                     <br/>
                     <p>U reserveerde {reservation.NumberOfAdults} ticket(s) voor volwassenen en {reservation.NumberOfChildren} voor kinderen.</p>
-                    <p>Gelieve &euro; {reservation.TotalPrice} over te schrijven op rekeningnummer BE. Vermeld de code <b>{reservation.PaymentCode}</b> als mededeling.</p>
+                    <p>Gelieve &euro; {reservation.TotalPrice} over te schrijven op rekeningnummer <b>BE16 0882 4372 0474</b>. Vermeld de code <b>{reservation.PaymentCode}</b> als mededeling.</p>
                     <br/>
-                    <p>Enkele dagen voor de show zal u uw tickets via email ontvangen.</p>
+                    <p>Zodra je betaling is verwerkt, ontvang je je tickets per e-mail. Controleer zeker ook je spamfolder.</p>
                     <br/>
                     <p>Wij kijken er alvast naar uit om voor u te zingen!</p>
                   </body>
