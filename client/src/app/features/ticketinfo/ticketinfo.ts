@@ -22,6 +22,12 @@ export class Ticketinfo implements OnInit {
   shows: Show[] = []
   private showService = inject(ShowService)
   private reservationService = inject(ReservationService)
+  
+  get ticketSaleStarted(): boolean {
+    const today = new Date();
+    const targetDate = new Date(today.getFullYear(), 11, 20); // December 20th of current year
+    return today >= targetDate;
+  }
 
   showDates = [
     { day: 'Zaterdag', date: '14 maart 2026', time: '19h30' },
