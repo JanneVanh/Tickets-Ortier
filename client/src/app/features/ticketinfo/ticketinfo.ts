@@ -22,7 +22,8 @@ export class Ticketinfo implements OnInit {
   shows: Show[] = []
   private showService = inject(ShowService)
   private reservationService = inject(ReservationService)
-  
+  loading = true;
+
   get ticketSaleStarted(): boolean {
     const today = new Date();
     const targetDate = new Date(today.getFullYear(), 11, 20); // December 20th of current year
@@ -55,7 +56,10 @@ export class Ticketinfo implements OnInit {
   ngOnInit(): void {
     this.reservationService.emptyReservation();
     this.showService.getShowsWithTickets().subscribe({
-      next: response => this.shows = response
+      next: response => {
+        this.shows = response
+        this.loading = false
+      }
     })
   }
 
