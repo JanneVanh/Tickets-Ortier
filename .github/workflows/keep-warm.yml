@@ -1,0 +1,14 @@
+name: Keep API Warm
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # every 10 minutes
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API
+        run: |
+          curl -s https://wa-ticketsortier.azurewebsites.net/health > /dev/null

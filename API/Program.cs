@@ -12,12 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-var startupLogger = LoggerFactory
-    .Create(b => b.AddConsole())
-    .CreateLogger("Startup");
-
-startupLogger.LogInformation("APP STARTING at {Time}", DateTime.UtcNow);
-
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -83,8 +77,6 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 var app = builder.Build();
 
-startupLogger.LogInformation("APP STARTED at {Time}", DateTime.UtcNow);
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -107,5 +99,8 @@ app.MapGroup("api").MapIdentityApi<AppUser>();
 
 app.MapControllers();
 app.MapFallbackToController("Index", "Fallback");
+
+app.MapGet("/health", () => Results.Ok("OK"))
+   .AllowAnonymous();
 
 app.Run();
