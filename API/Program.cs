@@ -9,9 +9,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
+var startupLogger = LoggerFactory
+    .Create(b => b.AddConsole())
+    .CreateLogger("Startup");
+
+startupLogger.LogInformation("APP STARTING at {Time}", DateTime.UtcNow);
+
+// Add services to the container.
 builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -74,6 +83,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 var app = builder.Build();
 
+startupLogger.LogInformation("APP STARTED at {Time}", DateTime.UtcNow);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -96,22 +107,5 @@ app.MapGroup("api").MapIdentityApi<AppUser>();
 
 app.MapControllers();
 app.MapFallbackToController("Index", "Fallback");
-
-try
-{
-    using var scope = app.Services.CreateScope();
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<TicketContext>();
-    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-    
-    await context.Database.MigrateAsync();
-    await TicketContextSeed.SeedAsync(context, userManager, roleManager);
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex);
-    throw;
-}
 
 app.Run();
