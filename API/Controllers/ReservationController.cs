@@ -2,6 +2,7 @@
 using API.Commands.DeleteReservation;
 using API.Commands.SendReservationConfirmation;
 using API.Commands.SendTickets;
+using API.Queries.ReservationOverview;
 using Core.Entities;
 using Core.Interfaces;
 using MediatR;
@@ -21,7 +22,9 @@ public class ReservationController(IReservationRepository reservationRepository,
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> GetReservations()
     {
-        var result = await _reservationRepository.GetReservationsAsync();
+        var query = new ReservationOverviewQuery();
+        var result = await _mediator.Send(query);
+
         if (result == null) return NoContent();
         return Ok(result);
     }

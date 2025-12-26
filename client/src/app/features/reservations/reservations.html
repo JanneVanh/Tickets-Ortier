@@ -99,7 +99,7 @@
         <!-- Totaal Column -->
         <ng-container matColumnDef="Totaal">
             <th mat-header-cell *matHeaderCellDef> Totaal </th>
-            <td mat-cell *matCellDef="let element"> €{{(element.numberOfAdults * 15) + (element.numberOfChildren * 8)}}
+            <td mat-cell *matCellDef="let element"> €{{(element.numberOfAdults * 14) + (element.numberOfChildren * 7)}}
             </td>
         </ng-container>
 
@@ -149,6 +149,16 @@
                 </mat-form-field>
             </td>
         </ng-container>
+
+        <!-- Stoelen Column -->
+         <ng-container matColumnDef="Stoelen">
+            <th mat-header-cell *matHeaderCellDef>Stoelen</th>
+            <td mat-cell *matCellDef="let element">
+                @for (stoel of element.seats; track $index) {
+                    {{stoel}} 
+                }
+            </td>
+         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>

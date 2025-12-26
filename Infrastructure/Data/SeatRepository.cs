@@ -24,6 +24,13 @@ public class SeatRepository(TicketContext ticketContext) : ISeatRepository
         return seats.Where(s => seatIds.Contains(s.Id)).ToList();
     }
 
+    public async Task<IReadOnlyCollection<ReservationSeat>> GetSeatsForReservationsAsync()
+    {
+        return await ticketContext.ReservationSeats
+            .Include(rs => rs.Seat)
+            .ToListAsync();
+    }
+
     public async Task<IReadOnlyCollection<Seat>> GetSeatsForReservationAsync(int reservationId)
     {
         return await ticketContext.ReservationSeats

@@ -11,4 +11,5 @@ export type Reservation = {
     remark: string;
     reservationDate: string;
     totalPrice: number;
+    seats: string[];
 }

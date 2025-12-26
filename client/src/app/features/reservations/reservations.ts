@@ -40,7 +40,7 @@ export class Reservations implements OnInit, AfterViewInit {
   snackbar = inject(Snackbar);
   cdr = inject(ChangeDetectorRef);
   dataSource = new MatTableDataSource<Reservation>([]);
-  columnsToDisplay = ['ID', 'Email', 'Surname', 'Name', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid', 'emailSent', 'Delete', 'Remark'];
+  columnsToDisplay = ['ID', 'Email', 'Surname', 'Name', 'Show', 'Volwassenen', 'Kinderen', 'Totaal', 'Code', 'isPaid', 'emailSent', 'Delete', 'Remark', 'Stoelen'];
   searchCode: string = ''
   filteredData: Reservation[] = [];
   showOnlyUnpaid: boolean = false;

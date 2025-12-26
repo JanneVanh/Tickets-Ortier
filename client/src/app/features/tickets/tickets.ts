@@ -94,6 +94,7 @@ export class Tickets implements OnInit {
       remark: "",
       reservationDate: new Date().toISOString(),
       totalPrice: 0,
+      seats: [],
     };
     this.reservationService.reservation.set(tempReservation);
   }
@@ -125,6 +126,7 @@ export class Tickets implements OnInit {
         remark: formValue.remark || "",
         reservationDate: new Date().toISOString(),
         totalPrice: this.reservationService.totalPrice() ?? 0,
+        seats: [],
       };
 
       this.reservationService.reservation.set(reservation);
