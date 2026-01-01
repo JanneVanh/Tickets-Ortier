@@ -5,7 +5,6 @@
             <mat-icon class="card-icon star-icon">local_activity</mat-icon>
             <h3>{{ ticketSaleStarted ? "Koop hier je tickets:" : "Tickets zijn beschikbaar vanaf 20 december."}} </h3>
         </div>
-        @if(ticketSaleStarted) {
         <div class="navigation-buttons">
 
             @for (show of shows; track $index) {
@@ -15,7 +14,6 @@
             </button>
             }
         </div>
-        }
     </div>
 
     <div class="info-grid">
