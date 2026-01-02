@@ -21,7 +21,7 @@ public class ReservationOverviewQueryHandler
         {
             Id = re.Id,
             SurName = re.Name,
-            Name = re.Name,
+            Name = re.SurName,
             Email = re.Email,
             ReservationDate = DateTime.Now,
             NumberOfAdults = re.NumberOfAdults,
