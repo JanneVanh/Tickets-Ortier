@@ -10,13 +10,14 @@ public class ExportReservationCommandHandler : IRequestHandler<ExportReservation
     public async Task<byte[]> Handle(ExportReservationCommand request, CancellationToken cancellationToken)
     {
         var dataTable = new DataTable();
+        dataTable.Columns.Add("Email",  typeof(string));
         dataTable.Columns.Add("Voornaam",  typeof(string));
         dataTable.Columns.Add("Naam",  typeof(string));
         dataTable.Columns.Add("Show",  typeof(string));
         dataTable.Columns.Add("Aantal volwassenen",  typeof(string));
         dataTable.Columns.Add("Aantal kinderen",  typeof(string));
 
-        List<string> headers = ["Voornaam", "Naam", "Show", "Aantal volwassenen", "Aantal kinderen"];
+        List<string> headers = ["Email", "Voornaam", "Naam", "Show", "Aantal volwassenen", "Aantal kinderen"];
         dataTable.Rows.Add(headers.ToArray());
 
         var reservations = request.ReservationDtos;
@@ -25,6 +26,7 @@ public class ExportReservationCommandHandler : IRequestHandler<ExportReservation
         {
             List<string> reservationLine = 
             [
+                reservation.Email,
                 reservation.Name,
                 reservation.SurName,
                 reservation.ShowId == 1 ? "Zaterdag" : "Zondag",
