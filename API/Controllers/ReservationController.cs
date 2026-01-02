@@ -1,5 +1,6 @@
 ﻿using API.Commands.CreateReservation;
 using API.Commands.DeleteReservation;
+using API.Commands.ExportReservations;
 using API.Commands.SendReservationConfirmation;
 using API.Commands.SendTickets;
 using API.Queries.ReservationOverview;
@@ -75,5 +76,28 @@ public class ReservationController(IReservationRepository reservationRepository,
         var command = new SendTicketsCommand();
         await _mediator.Send(command);
         return NoContent();
+    }
+
+    [HttpGet("export")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult> ExportReservations()
+    {
+        var query = new ReservationOverviewQuery();
+        var reservationDtos = await _mediator.Send(query);
+
+        var command = new ExportReservationCommand
+        {
+            ReservationDtos = reservationDtos
+        };
+        var result = await _mediator.Send(command);
+
+        if (result is null)
+            return NoContent();
+
+        return File(
+            result,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            $"reservaties-{DateTime.Now:yyyyMMdd-HHmm}.xlsx"
+        );
     }
 }
