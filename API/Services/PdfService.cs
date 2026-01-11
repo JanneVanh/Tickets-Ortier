@@ -90,7 +90,7 @@ public class PdfService(IShowRepository showRepository, ISeatRepository seatRepo
             .SetMarginBottom(20);
 
         showInfo.Add(new Text("Show: ").SetFont(boldFont));
-        showInfo.Add($"{show.Day} - {show.CurtainsUp: dd MMMM yyyy} {show.CurtainsUp: hh:mm}\n");
+        showInfo.Add($"{show.Day} - {show.CurtainsUp: dd MMMM yyyy} {show.CurtainsUp: HH:mm}\n");
 
         document.Add(showInfo);
 
