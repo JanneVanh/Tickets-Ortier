@@ -16,8 +16,9 @@ public class ExportReservationCommandHandler : IRequestHandler<ExportReservation
         dataTable.Columns.Add("Show",  typeof(string));
         dataTable.Columns.Add("Aantal volwassenen",  typeof(string));
         dataTable.Columns.Add("Aantal kinderen",  typeof(string));
+        dataTable.Columns.Add("Stoelen", typeof(string));
 
-        List<string> headers = ["Email", "Voornaam", "Naam", "Show", "Aantal volwassenen", "Aantal kinderen"];
+        List<string> headers = ["Email", "Voornaam", "Naam", "Show", "Aantal volwassenen", "Aantal kinderen", "Stoelen"];
         dataTable.Rows.Add(headers.ToArray());
 
         var reservations = request.ReservationDtos;
@@ -31,7 +32,8 @@ public class ExportReservationCommandHandler : IRequestHandler<ExportReservation
                 reservation.SurName,
                 reservation.ShowId == 1 ? "Zaterdag" : "Zondag",
                 reservation.NumberOfAdults.ToString(),
-                reservation.NumberOfChildren.ToString()
+                reservation.NumberOfChildren.ToString(),
+                string.Join(", ", reservation.Seats)
             ];
             dataTable.Rows.Add( reservationLine.ToArray() );
         }
@@ -53,5 +55,6 @@ public record ReservationLine(
     [property:XLColumn(Order = 2)] string Voornaam,
     [property:XLColumn(Order = 3)] string Show,
     [property:XLColumn(Order = 4)] int AantalVolwassenen,
-    [property:XLColumn(Order = 5)] int AantalKinderen
+    [property:XLColumn(Order = 5)] int AantalKinderen,
+    [property:XLColumn(Order = 6)] string Stoelen
     );
