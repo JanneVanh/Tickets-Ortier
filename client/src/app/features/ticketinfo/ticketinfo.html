@@ -1,6 +1,6 @@
 @if (!loading) {
 <div class="ticket-info-container">
-    <div>
+    <!-- <div>
         <div class="ticket-header">
             <mat-icon class="card-icon star-icon">local_activity</mat-icon>
             <h3>{{ ticketSaleStarted ? "Koop hier je tickets:" : "Tickets zijn beschikbaar vanaf 20 december."}} </h3>
@@ -14,7 +14,7 @@
             </button>
             }
         </div>
-    </div>
+    </div> -->
 
     <div class="info-grid">
         <div class="info-card">
@@ -28,6 +28,8 @@
                     <p><strong>{{ show.day }}</strong> {{ show.date }} om <span class="time">{{ show.time }}</span>
                         @if (showIsSoldOut(show.day)) {
                         <strong class="sold-out"> UITVERKOCHT</strong>
+                        } @else {
+                        <strong class="sold-out"> Nog enkele tickets aan de deur</strong>
                         }
                     </p>
                     }
