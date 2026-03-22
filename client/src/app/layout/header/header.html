@@ -1,20 +1,25 @@
 <header class="border-b shadow-md p-3 w-full max-h-20 fixed top-0 z-50">
     <div class="header-container">
-        <img routerLink="/" src="/images/logo ortier wit.png" alt="app logo" class="max-h-16" (click)="closeMobileMenu()">
-        
+        <img routerLink="/" src="/images/logo ortier wit.png" alt="app logo" class="max-h-16"
+            (click)="closeMobileMenu()">
+
         <!-- Mobile Page Title -->
         <h1 class="mobile-title">{{pageTitle}}</h1>
-        
+
         <!-- Desktop Navigation -->
         <nav class="desktop-nav gap-3 my-2 text-2xl">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            <a routerLink="/wiezijnwij" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Wie zijn wij?</a>
+            <a routerLink="/wiezijnwij" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Wie zijn
+                wij?</a>
+
+            @if (ticketSalesEnabled) {
             <a routerLink="/ticketinfo" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tickets</a>
             @if (canAccessReservations) {
-                <a routerLink="/reservations" routerLinkActive="active">Reservations</a>
+            <a routerLink="/reservations" routerLinkActive="active">Reservations</a>
+            }
             }
         </nav>
-        
+
         <!-- Desktop User Menu Button -->
         @if (accountService.currentUser()) {
         <button mat-button [mat-menu-trigger-for]="menu" class="desktop-user-menu">
@@ -22,7 +27,7 @@
             <span>{{accountService.currentUser()?.email}}</span>
         </button>
         }
-        
+
         <!-- Hamburger Menu Button (Mobile Only) -->
         <button class="hamburger-menu" (click)="toggleMobileMenu()" [class.open]="mobileMenuOpen">
             <span></span>
@@ -30,20 +35,25 @@
             <span></span>
         </button>
     </div>
-    
+
     <!-- Mobile Navigation Menu -->
     <nav class="mobile-nav" [class.mobile-open]="mobileMenuOpen">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a>
-        <a routerLink="/wiezijnwij" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Wie zijn wij?</a>
-        <a routerLink="/ticketinfo" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Tickets</a>
-        @if (canAccessReservations) {
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+            (click)="closeMobileMenu()">Home</a>
+        <a routerLink="/wiezijnwij" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+            (click)="closeMobileMenu()">Wie zijn wij?</a>
+        @if (ticketSalesEnabled) {
+            <a routerLink="/ticketinfo" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                (click)="closeMobileMenu()">Tickets</a>
+            @if (canAccessReservations) {
             <a routerLink="/reservations" routerLinkActive="active" (click)="closeMobileMenu()">Reservations</a>
+            }
         }
         @if (accountService.currentUser()) {
-            <a class="user-menu-mobile" [mat-menu-trigger-for]="menu" (click)="closeMobileMenu()">
-                <mat-icon>account_circle</mat-icon>
-                <span>{{accountService.currentUser()?.email}}</span>
-            </a>
+        <a class="user-menu-mobile" [mat-menu-trigger-for]="menu" (click)="closeMobileMenu()">
+            <mat-icon>account_circle</mat-icon>
+            <span>{{accountService.currentUser()?.email}}</span>
+        </a>
         }
     </nav>
 </header>
@@ -54,10 +64,10 @@
 
 <mat-menu #menu="matMenu" class="px-5">
     @if (canAccessReservations) {
-        <button mat-menu-item class="px-3" routerLink="/reservations">
-            <mat-icon>event_seat</mat-icon>
-            My Reservations
-        </button>
+    <button mat-menu-item class="px-3" routerLink="/reservations">
+        <mat-icon>event_seat</mat-icon>
+        My Reservations
+    </button>
     }
     <button mat-menu-item class="px-3" (click)="logout()">
         <mat-icon>logout</mat-icon>

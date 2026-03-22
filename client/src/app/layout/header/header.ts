@@ -6,6 +6,8 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { Account } from '../../core/services/account';
 import { Title } from '@angular/platform-browser';
 import { filter } from 'rxjs';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-header',
@@ -22,6 +24,7 @@ import { filter } from 'rxjs';
   styleUrl: './header.scss'
 })
 export class Header implements OnInit {
+  ticketSalesEnabled = environment.features.ticketSales;
   accountService = inject(Account)
   router = inject(Router)
   titleService = inject(Title)
